@@ -17,3 +17,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Formula1
+      fonts:
+        - asset: fonts/Formula1-Regular.ttf
+    - family: Formula1bold
+      fonts:
+        - asset: fonts/Formula1-Bold.ttf

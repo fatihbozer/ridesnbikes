@@ -47,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 16),
-                        child: buildCoverImage(),
+                        child: buildProfilPicture(),
                       ),
                       const Column(
                         mainAxisAlignment: MainAxisAlignment.center,

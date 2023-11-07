@@ -23,6 +23,7 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Username',
+                          style: TextStyle(fontFamily: 'Formula1bold'),
                         ),
                         Text(
                           '13 minutes ago',
@@ -35,27 +36,50 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Container(width: 320, height: 320, color: Colors.black),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               const Padding(
                 padding: EdgeInsets.only(left: 52.0),
                 child: Row(
                   children: [
                     Icon(Icons.heart_broken),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
+                      padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
                       child: Icon(Icons.comment),
                     ),
                     Icon(Icons.send),
+                    Padding(
+                      padding: EdgeInsets.only(left: 52.0),
+                      child: Text('213 Persons liked this.'),
+                    )
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 16.0),
               const Padding(
                 padding: EdgeInsets.only(left: 36.0),
                 child: Row(
                   children: [
-                    Text('Username'),
-                    Text('Description'),
+                    Text(
+                      'Username',
+                      style: TextStyle(fontFamily: 'Formula1bold'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.0),
+                      child: Text('Description'),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 12),
+              const Padding(
+                padding: EdgeInsets.only(right: 52.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'show comments..',
+                      style: TextStyle(color: Colors.grey),
+                    ),
                   ],
                 ),
               ),

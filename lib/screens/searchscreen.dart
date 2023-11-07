@@ -22,8 +22,40 @@ class SearchScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Suche'),
+      body: ListView(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(height: 180, width: 180, color: Colors.black),
+              Container(height: 180, width: 180, color: Colors.black),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(height: 180, width: 180, color: Colors.black),
+              Container(height: 180, width: 180, color: Colors.black),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(height: 180, width: 180, color: Colors.black),
+              Container(height: 180, width: 180, color: Colors.black),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(height: 180, width: 180, color: Colors.black),
+              Container(height: 180, width: 180, color: Colors.black),
+            ],
+          ),
+        ],
       ),
     );
   }

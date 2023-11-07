@@ -7,6 +7,10 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        title: const Text(
+          'Profile',
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
@@ -24,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20), // Abstand vom oberen Rand
+              const SizedBox(height: 16), // Abstand vom oberen Rand
               Column(
                 children: [
                   Row(
@@ -93,44 +97,38 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
-              Row(
+              const SizedBox(height: 16),
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    child: Text(
-                      'All',
-                      style: TextStyle(fontFamily: 'Formula1bold'),
-                    ),
+                  Text(
+                    'All',
+                    style: TextStyle(fontFamily: 'Formula1bold'),
                   ),
-                  Container(
-                    child: Text(
-                      'Photos',
-                      style: TextStyle(fontFamily: 'Formula1bold'),
-                    ),
+                  Text(
+                    'Photos',
+                    style: TextStyle(fontFamily: 'Formula1bold'),
                   ),
-                  Container(
-                    child: Text(
-                      'Videos',
-                      style: TextStyle(fontFamily: 'Formula1bold'),
-                    ),
+                  Text(
+                    'Videos',
+                    style: TextStyle(fontFamily: 'Formula1bold'),
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(height: 150, width: 150, color: Colors.black),
-                  Container(height: 150, width: 150, color: Colors.black),
+                  Container(height: 180, width: 180, color: Colors.black),
+                  Container(height: 180, width: 180, color: Colors.black),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(height: 150, width: 150, color: Colors.black),
-                  Container(height: 150, width: 150, color: Colors.black),
+                  Container(height: 180, width: 180, color: Colors.black),
+                  Container(height: 180, width: 180, color: Colors.black),
                 ],
               ),
             ],

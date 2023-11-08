@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/screens/homescreen.dart';
-import 'package:rides_n_bikes/screens/searchscreen.dart';
-import 'package:rides_n_bikes/screens/editscreen.dart';
-import 'package:rides_n_bikes/screens/bikescreen.dart';
-import 'package:rides_n_bikes/screens/profilescreen.dart';
+import 'package:rides_n_bikes/screens/home_screen.dart';
+import 'package:rides_n_bikes/screens/search_screen.dart';
+import 'package:rides_n_bikes/screens/post_screen.dart';
+import 'package:rides_n_bikes/screens/bike_screen.dart';
+import 'package:rides_n_bikes/screens/profile_screen.dart';
 
 void main() {
   runApp(MyApp());

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rides_n_bikes/rides_screens/chat_screen.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_post_home.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,7 +18,9 @@ class HomeScreen extends StatelessWidget {
             margin: const EdgeInsets.only(right: 16),
             child: IconButton(
               icon: Icon(Icons.chat_bubble_outline, color: Colors.black),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen()));
+              },
             ),
           ),
         ],

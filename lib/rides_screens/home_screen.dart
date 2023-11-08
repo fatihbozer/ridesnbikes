@@ -15,9 +15,9 @@ class HomeScreen extends StatelessWidget {
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 16),
-            child: const Icon(
-              Icons.chat_bubble_outline,
-              color: Colors.black,
+            child: IconButton(
+              icon: Icon(Icons.chat_bubble_outline, color: Colors.black),
+              onPressed: () {},
             ),
           ),
         ],

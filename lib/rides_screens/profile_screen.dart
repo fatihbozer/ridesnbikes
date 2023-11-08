@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/screens/widgets.dart';
+import 'package:rides_n_bikes/rides_widgets/rides_widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override

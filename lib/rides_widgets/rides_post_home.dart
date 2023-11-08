@@ -74,7 +74,7 @@ class RidePostWidget extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         Padding(
           padding: EdgeInsets.only(right: 52.0),
           child: Row(
@@ -87,6 +87,7 @@ class RidePostWidget extends StatelessWidget {
             ],
           ),
         ),
+        const Divider(height: 50, indent: 20, endIndent: 20, color: Colors.grey),
       ],
     );
   }

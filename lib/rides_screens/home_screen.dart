@@ -6,7 +6,18 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: const [
+            DrawerHeader(
+              decoration: BoxDecoration(),
+              child: Text('header'),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         title: const Text(
           'Home',
           style: TextStyle(color: Colors.black),

@@ -10,35 +10,93 @@ class SelectBike extends StatelessWidget {
       height: 500,
       child: Column(
         children: [
+          SizedBox(height: 16),
           Row(
             children: [
+              Padding(
+                padding: EdgeInsets.only(left: 30),
+              ),
               Icon(Icons.pedal_bike),
-              Text('Modelle'),
+              Padding(
+                padding: EdgeInsets.only(left: 20),
+              ),
+              Text(
+                'Motorrad Typ',
+                style: TextStyle(fontFamily: 'Formula1bold', fontSize: 16),
+              ),
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              BikeChip(text: 'BMW'),
-              BikeChip(text: 'Honda'),
+              BikeChip(text: 'Chopper'),
+              BikeChip(text: 'Naked Bike'),
+              BikeChip(text: 'Motocross'),
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              BikeChip(text: 'BMW'),
-              BikeChip(text: 'Honda'),
+              BikeChip(text: 'Touring'),
+              BikeChip(text: 'Superbikes'),
+              BikeChip(text: 'Enduro'),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              BikeChip(text: 'Motorroller'),
+              BikeChip(text: 'Cafe Racer/Scrambler'),
             ],
           ),
           Divider(),
+          SizedBox(height: 16),
           Row(
             children: [
+              Padding(
+                padding: EdgeInsets.only(left: 30),
+              ),
               Icon(Icons.pedal_bike),
-              Text('Marke'),
+              Padding(
+                padding: EdgeInsets.only(left: 20),
+              ),
+              Text(
+                'Marke',
+                style: TextStyle(fontFamily: 'Formula1bold', fontSize: 16),
+              ),
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              BikeChip(text: 'Aprilia'),
               BikeChip(text: 'BMW'),
               BikeChip(text: 'Honda'),
+              BikeChip(text: 'Ducati'),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              BikeChip(text: 'Husqvarna'),
+              BikeChip(text: 'Indian'),
+              BikeChip(text: 'Harley-Davidson'),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              BikeChip(text: 'KTM'),
+              BikeChip(text: 'Kawasaki'),
+              BikeChip(text: 'Suzuki'),
+              BikeChip(text: 'Triumph'),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              BikeChip(text: 'Vespa'),
+              BikeChip(text: 'Yamaha'),
             ],
           ),
         ],

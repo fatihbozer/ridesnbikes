@@ -24,7 +24,7 @@ class MotorcycleScreen extends StatelessWidget {
                       onPressed: () {
                         Scaffold.of(context).showBottomSheet((context) => SelectBike());
                       },
-                      child: Text('add Motorcycle'),
+                      child: Text('choose Motorcycle'),
                     ),
                   ),
                 ),

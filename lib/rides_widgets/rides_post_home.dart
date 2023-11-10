@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_widgets.dart';
+import 'package:rides_n_bikes/rides_widgets/rides_write_comment.dart';
+import 'package:rides_n_bikes/rides_widgets/rides_share_post.dart';
 
 class RidePostWidget extends StatelessWidget {
   final String username;
@@ -40,19 +42,28 @@ class RidePostWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Container(width: 320, height: 320, color: Colors.black),
-        const SizedBox(height: 12),
-        const Padding(
-          padding: EdgeInsets.only(left: 52.0),
+        Padding(
+          padding: EdgeInsets.only(left: 40.0),
           child: Row(
             children: [
-              Icon(Icons.heart_broken),
-              Padding(
-                padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
-                child: Icon(Icons.comment),
+              IconButton(
+                icon: Icon(Icons.heart_broken),
+                onPressed: () {},
               ),
-              Icon(Icons.send),
+              IconButton(
+                icon: Icon(Icons.comment),
+                onPressed: () {
+                  Scaffold.of(context).showBottomSheet((context) => const PostComment());
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.send),
+                onPressed: () {
+                  Scaffold.of(context).showBottomSheet((context) => const PostShare());
+                },
+              ),
               Padding(
-                padding: EdgeInsets.only(left: 52.0),
+                padding: const EdgeInsets.only(left: 20.0),
                 child: Text('213 Persons liked this.'),
               ),
             ],

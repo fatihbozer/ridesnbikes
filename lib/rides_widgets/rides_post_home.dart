@@ -69,7 +69,6 @@ class RidePostWidget extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 16.0),
         Padding(
           padding: EdgeInsets.only(left: 36.0),
           child: Row(
@@ -85,7 +84,6 @@ class RidePostWidget extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 12),
         Padding(
           padding: EdgeInsets.only(right: 52.0),
           child: Row(

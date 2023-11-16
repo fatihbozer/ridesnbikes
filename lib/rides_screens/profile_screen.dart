@@ -116,19 +116,43 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(height: 180, width: 180, color: Colors.black),
-                  Container(height: 180, width: 180, color: Colors.black),
+                  SizedBox(
+                      height: 180,
+                      width: 180,
+                      child: Image(
+                        image: AssetImage('assets/images/harley-davidson1.jpg'),
+                        fit: BoxFit.cover,
+                      )),
+                  SizedBox(
+                      height: 180,
+                      width: 180,
+                      child: Image(
+                        image: AssetImage('assets/images/harley-davidson2.jpg'),
+                        fit: BoxFit.cover,
+                      )),
                 ],
               ),
               const SizedBox(height: 16),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(height: 180, width: 180, color: Colors.black),
-                  Container(height: 180, width: 180, color: Colors.black),
+                  SizedBox(
+                      height: 180,
+                      width: 180,
+                      child: Image(
+                        image: AssetImage('assets/images/harley-davidson3.jpg'),
+                        fit: BoxFit.cover,
+                      )),
+                  SizedBox(
+                      height: 180,
+                      width: 180,
+                      child: Image(
+                        image: AssetImage('assets/images/harley-davidson4.jpg'),
+                        fit: BoxFit.cover,
+                      )),
                 ],
               ),
             ],

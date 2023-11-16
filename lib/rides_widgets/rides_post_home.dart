@@ -29,11 +29,11 @@ class RidePostWidget extends StatelessWidget {
                 children: [
                   Text(
                     username,
-                    style: TextStyle(fontFamily: 'Formula1bold'),
+                    style: const TextStyle(fontFamily: 'Formula1bold'),
                   ),
                   Text(
                     time,
-                    style: TextStyle(fontSize: 12),
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ],
               ),
@@ -43,55 +43,55 @@ class RidePostWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Container(width: 320, height: 320, color: Colors.black),
         Padding(
-          padding: EdgeInsets.only(left: 40.0),
+          padding: const EdgeInsets.only(left: 40.0),
           child: Row(
             children: [
               IconButton(
-                icon: Icon(Icons.heart_broken),
+                icon: const Icon(Icons.heart_broken),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.comment),
+                icon: const Icon(Icons.comment),
                 onPressed: () {
                   Scaffold.of(context).showBottomSheet((context) => const PostComment());
                 },
               ),
               IconButton(
-                icon: Icon(Icons.send),
+                icon: const Icon(Icons.send),
                 onPressed: () {
                   Scaffold.of(context).showBottomSheet((context) => const PostShare());
                 },
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
+              const Padding(
+                padding: EdgeInsets.only(left: 20.0),
                 child: Text('213 Persons liked this.'),
               ),
             ],
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 36.0),
+          padding: const EdgeInsets.only(left: 36.0),
           child: Row(
             children: [
               Text(
                 username,
-                style: TextStyle(fontFamily: 'Formula1bold', overflow: TextOverflow.ellipsis),
+                style: const TextStyle(fontFamily: 'Formula1bold', overflow: TextOverflow.ellipsis),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 10.0),
+                padding: const EdgeInsets.only(left: 10.0),
                 child: Text(description),
               ),
             ],
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(right: 52.0),
+          padding: const EdgeInsets.only(right: 52.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
                 comments,
-                style: TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               ),
             ],
           ),

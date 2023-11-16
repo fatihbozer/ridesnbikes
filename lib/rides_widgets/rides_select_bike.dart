@@ -8,7 +8,7 @@ class SelectBike extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 500,
-      child: Column(
+      child: const Column(
         children: [
           SizedBox(height: 16),
           Row(

@@ -4,33 +4,45 @@ import 'package:rides_n_bikes/helper/helper_functions.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_button.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_textfield.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
 
-  LoginPage({super.key, required this.onTap});
+  RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController usernameController = TextEditingController();
+
   TextEditingController emailController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
 
-  void login() async {
+  TextEditingController confirmPwController = TextEditingController();
+
+  void registerUser() async {
     showDialog(
       context: context,
       builder: (context) => Center(
         child: CircularProgressIndicator(),
       ),
     );
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
-      if (context.mounted) Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
+    if (passwordController.text != confirmPwController.text) {
       Navigator.pop(context);
-      displayMessageToUser(e.code, context);
+      displayMessageToUser('Passwords dont match!', context);
+    } else {
+      try {
+        UserCredential? userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        Navigator.pop(context);
+      } on FirebaseAuthException catch (e) {
+        Navigator.pop(context);
+        displayMessageToUser(e.code, context);
+      }
     }
   }
 
@@ -54,9 +66,13 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(fontFamily: 'Formula1bold', fontSize: 28),
               ),
               const SizedBox(height: 32),
+              MyTextField(hintText: "Username", obscureText: false, controller: usernameController),
+              const SizedBox(height: 16),
               MyTextField(hintText: "E-Mail", obscureText: false, controller: emailController),
               const SizedBox(height: 16),
               MyTextField(hintText: "Password", obscureText: true, controller: passwordController),
+              const SizedBox(height: 16),
+              MyTextField(hintText: "Confirm Password", obscureText: true, controller: confirmPwController),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -67,16 +83,16 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               const SizedBox(height: 32),
-              MyButton(text: 'Login', onTap: login),
+              MyButton(text: 'Register', onTap: registerUser),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Dont have an account?  '),
+                  const Text('Already have an account?  '),
                   GestureDetector(
                     onTap: widget.onTap,
                     child: const Text(
-                      'Register here.',
+                      'Login here.',
                       style: TextStyle(fontFamily: 'Formula1bold'),
                     ),
                   ),

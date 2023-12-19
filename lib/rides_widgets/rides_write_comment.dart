@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/rides_widgets/rides_widgets.dart';
 
 class PostComment extends StatelessWidget {
   const PostComment({super.key});

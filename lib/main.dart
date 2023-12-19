@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:rides_n_bikes/rides_screens/login_screen.dart';
 import 'package:rides_n_bikes/rides_screens/home_screen.dart';
 import 'package:rides_n_bikes/rides_screens/search_screen.dart';
 import 'package:rides_n_bikes/rides_screens/post_screen.dart';
 import 'package:rides_n_bikes/rides_screens/bike_screen.dart';
 import 'package:rides_n_bikes/rides_screens/profile_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -14,8 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Formula1'),
-      title: 'rides n Bikes',
-      home: MyHomePage(),
+      title: "rides n' Bikes",
+      home: LoginPage(),
     );
   }
 }

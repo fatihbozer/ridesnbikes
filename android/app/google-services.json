@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "433408603663",
+    "project_id": "rides-n-bikes-app-a9cde",
+    "storage_bucket": "rides-n-bikes-app-a9cde.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433408603663:android:2d0b18bd3077d6a785957a",
+        "android_client_info": {
+          "package_name": "com.example.rides_n_bikes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5_GseqF0gKr6E3JokbW5tFRWYzeGMfdc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

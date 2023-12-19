@@ -7,6 +7,7 @@ environment:
   sdk: '>=3.1.3 <4.0.0'
 
 dependencies:
+  firebase_core: ^2.24.2
   flutter:
     sdk: flutter
 
@@ -26,3 +27,6 @@ flutter:
     - family: Formula1bold
       fonts:
         - asset: fonts/Formula1-Bold.ttf
+    - family: Formula1wide
+      fonts:
+        - asset: fonts/Formula1-Wide.ttf

@@ -16,6 +16,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(MyApp());
 }
 
@@ -30,14 +31,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+class MainFeedPage extends StatefulWidget {
+  MainFeedPage({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MainFeedState createState() => _MainFeedState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MainFeedState extends State<MainFeedPage> {
   int _selectedIndex = 0;
 
   @override

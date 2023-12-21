@@ -8,7 +8,7 @@ import 'package:rides_n_bikes/rides_widgets/rides_textfield.dart';
 class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
 
-  RegisterPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -57,6 +57,8 @@ class _RegisterPageState extends State<RegisterPage> {
       await FirebaseFirestore.instance.collection("Users").doc(userCredential.user!.email).set({
         'email': userCredential.user!.email,
         'username': usernameController.text,
+        'name': usernameController.text,
+        'bio': 'Hallo, mein Name ist ${usernameController.text} und ich bin neu auf dieser App.'
       });
     }
   }

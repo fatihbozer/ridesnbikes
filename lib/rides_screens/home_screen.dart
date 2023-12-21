@@ -4,12 +4,14 @@ import 'package:rides_n_bikes/rides_widgets/my_drawer.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_post_home.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const MyDrawer(),
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
           'Home',
           style: TextStyle(color: Colors.black),
@@ -20,9 +22,9 @@ class HomeScreen extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(right: 16),
             child: IconButton(
-              icon: Icon(Icons.chat_bubble_outline, color: Colors.black),
+              icon: const Icon(Icons.chat_bubble_outline, color: Colors.black),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ChatScreen()));
               },
             ),
           ),

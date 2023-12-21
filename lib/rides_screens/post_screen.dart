@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class EditScreen extends StatelessWidget {
+  const EditScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +51,7 @@ class EditScreen extends StatelessWidget {
                       Container(width: 180, height: 180, color: Colors.black),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Row(

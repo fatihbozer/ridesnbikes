@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
-import 'package:rides_n_bikes/rides_widgets/rides_button.dart';
+import 'package:rides_n_bikes/rides_widgets/my_button.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_textfield.dart';
 
 class RegisterPage extends StatefulWidget {

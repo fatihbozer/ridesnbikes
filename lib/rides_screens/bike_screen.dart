@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_post_home.dart';
-import 'package:rides_n_bikes/rides_widgets/rides_select_bike.dart';
+import 'package:rides_n_bikes/rides_widgets/select_bike.dart';
 
 class MotorcycleScreen extends StatelessWidget {
   @override

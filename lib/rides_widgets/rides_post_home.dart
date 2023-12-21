@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_widgets.dart';
-import 'package:rides_n_bikes/rides_widgets/rides_write_comment.dart';
-import 'package:rides_n_bikes/rides_widgets/rides_share_post.dart';
+import 'package:rides_n_bikes/rides_widgets/write_comment.dart';
+import 'package:rides_n_bikes/rides_widgets/share_post.dart';
 
 class RidePostWidget extends StatelessWidget {
   final String username;

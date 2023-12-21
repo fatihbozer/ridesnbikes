@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rides_screens/chat_screen.dart';
+import 'package:rides_n_bikes/rides_widgets/my_drawer.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_post_home.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: const [
-            DrawerHeader(
-              decoration: BoxDecoration(),
-              child: Text('header'),
-            ),
-          ],
-        ),
-      ),
+      drawer: const MyDrawer(),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
         title: const Text(

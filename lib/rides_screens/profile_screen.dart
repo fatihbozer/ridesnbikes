@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16), //Abstand zwischen Bild und Benutzername
                   const Text(
-                    'RideBike',
+                    'Ride Bike',
                     style: TextStyle(fontFamily: 'Formula1bold'),
                   ),
                   const Text('@RidesnBikes'),

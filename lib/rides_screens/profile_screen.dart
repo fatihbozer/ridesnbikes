@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rides_n_bikes/rides_screens/editprofile_screen.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -13,6 +14,17 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   //Benutzer
   final currentUser = FirebaseAuth.instance.currentUser!;
+
+  /*Future<void> editField(String userData) async {
+    String newValue = "";
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Edit Profile"),
+      ),
+    );
+  }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +40,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 16),
-            child: const Icon(
-              Icons.settings,
+            child: IconButton(
+              icon: Icon(Icons.settings),
               color: Colors.black,
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const EditProfile()));
+              },
             ),
           ),
         ],
@@ -181,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Text('Error${snapshot.error}'),
             );
           }
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },

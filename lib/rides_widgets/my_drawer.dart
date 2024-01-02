@@ -20,8 +20,8 @@ class MyDrawer extends StatelessWidget {
               const DrawerHeader(
                 child: Center(
                   child: ListTile(
-                    leading: const Icon(Icons.home),
-                    title: const Text('H O M E'),
+                    leading: Icon(Icons.home),
+                    title: Text('H O M E'),
                   ),
                 ),
               ),

@@ -17,7 +17,14 @@ class MyDrawer extends StatelessWidget {
         children: [
           Column(
             children: [
-              const DrawerHeader(child: Icon(Icons.home)),
+              const DrawerHeader(
+                child: Center(
+                  child: ListTile(
+                    leading: const Icon(Icons.home),
+                    title: const Text('H O M E'),
+                  ),
+                ),
+              ),
               const SizedBox(height: 25),
               Padding(
                 padding: const EdgeInsets.only(left: 25.0),

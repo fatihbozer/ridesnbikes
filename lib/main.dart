@@ -6,6 +6,7 @@ import 'package:rides_n_bikes/rides_screens/post_screen.dart';
 import 'package:rides_n_bikes/rides_screens/bike_screen.dart';
 import 'package:rides_n_bikes/rides_screens/profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rides_n_bikes/theme/theme.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'Formula1'),
+      theme: rideMode,
       title: "rides n' Bikes",
       home: AuthPage(),
     );

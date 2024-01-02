@@ -43,11 +43,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: 80,
-                width: 80,
-                color: Colors.black,
-              ),
+              Container(height: 100, width: 100, child: const Image(image: AssetImage('assets/icon/logo.png'))),
               const SizedBox(height: 32),
               const Text(
                 "rides n' Bikes",
@@ -62,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     'Forgot Password?',
-                    style: TextStyle(color: Colors.grey.shade600),
+                    style: TextStyle(color: Theme.of(context).colorScheme.surface),
                   ),
                 ],
               ),

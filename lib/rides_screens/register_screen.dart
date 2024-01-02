@@ -59,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'email': userCredential.user!.email,
         'username': usernameController.text,
         'name': usernameController.text,
-        'bio': 'Hallo, mein Name ist ${usernameController.text} und ich bin neu auf dieser App.'
+        'bio': 'Hello, my name is ${usernameController.text} and I am new to this app.'
       });
     }
   }
@@ -73,11 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: 80,
-                width: 80,
-                color: Colors.black,
-              ),
+              Container(height: 100, width: 100, child: const Image(image: AssetImage('assets/icon/logo.png'))),
               const SizedBox(height: 32),
               const Text(
                 "rides n' Bikes",
@@ -91,15 +87,6 @@ class _RegisterPageState extends State<RegisterPage> {
               MyTextField(hintText: "Password", obscureText: true, controller: passwordController),
               const SizedBox(height: 16),
               MyTextField(hintText: "Confirm Password", obscureText: true, controller: confirmPwController),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: Colors.grey.shade600),
-                  ),
-                ],
-              ),
               const SizedBox(height: 32),
               MyButton(text: 'Register', onTap: registerUser),
               const SizedBox(height: 16),

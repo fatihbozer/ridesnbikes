@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: rideMode,
       title: "rides n' Bikes",
-      home: AuthPage(),
+      home: const AuthPage(),
     );
   }
 }
@@ -45,34 +45,34 @@ class _MainFeedState extends State<MainFeedPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         showSelectedLabels: false,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.white),
-            activeIcon: Icon(Icons.home, color: Colors.orange),
+            icon: const Icon(Icons.home, color: Colors.white),
+            activeIcon: Icon(Icons.home, color: Theme.of(context).colorScheme.primary),
             label: 'Home',
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search, color: Colors.white),
-            activeIcon: Icon(Icons.search, color: Colors.orange),
+            icon: const Icon(Icons.search, color: Colors.white),
+            activeIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.primary),
             label: 'Suche',
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add, color: Colors.white),
-            activeIcon: Icon(Icons.add, color: Colors.orange),
+            icon: const Icon(Icons.add, color: Colors.white),
+            activeIcon: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
             label: 'Beitrag erstellen',
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.motorcycle, color: Colors.white),
-            activeIcon: Icon(Icons.motorcycle, color: Colors.orange),
+            icon: const Icon(Icons.motorcycle, color: Colors.white),
+            activeIcon: Icon(Icons.motorcycle, color: Theme.of(context).colorScheme.primary),
             label: 'Motorrad',
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: Colors.white),
-            activeIcon: Icon(Icons.person, color: Colors.orange),
+            icon: const Icon(Icons.person, color: Colors.white),
+            activeIcon: Icon(Icons.person, color: Theme.of(context).colorScheme.primary),
             label: 'Profil',
             backgroundColor: Colors.black,
           ),
@@ -90,15 +90,15 @@ class _MainFeedState extends State<MainFeedPage> {
   Widget _getScreen(int index) {
     switch (index) {
       case 0:
-        return HomeScreen();
+        return const HomeScreen();
       case 1:
-        return SearchScreen();
+        return const SearchScreen();
       case 2:
-        return EditScreen();
+        return const EditScreen();
       case 3:
-        return MotorcycleScreen();
+        return const MotorcycleScreen();
       case 4:
-        return ProfileScreen();
+        return const ProfileScreen();
       default:
         return Container();
     }

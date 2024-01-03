@@ -22,7 +22,7 @@ class EditProfile extends StatelessWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.edit),
-              title: const Text('Change Name'),
+              title: const Text('Change name'),
               onTap: () {},
             ),
             ListTile(

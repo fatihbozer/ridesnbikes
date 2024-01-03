@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
-import 'package:rides_n_bikes/rides_widgets/my_button.dart';
+import 'package:rides_n_bikes/rides_widgets/rl_button.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_textfield.dart';
 
 class LoginPage extends StatefulWidget {
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               const SizedBox(height: 32),
-              MyButton(text: 'Login', onTap: login),
+              MyRLButton(text: 'Login', onTap: login),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

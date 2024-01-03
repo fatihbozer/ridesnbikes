@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
-import 'package:rides_n_bikes/rides_widgets/my_button.dart';
+import 'package:rides_n_bikes/rides_widgets/rl_button.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_textfield.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -88,7 +88,7 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 16),
               MyTextField(hintText: "Confirm Password", obscureText: true, controller: confirmPwController),
               const SizedBox(height: 32),
-              MyButton(text: 'Register', onTap: registerUser),
+              MyRLButton(text: 'Register', onTap: registerUser),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

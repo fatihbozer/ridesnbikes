@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rides_n_bikes/rides_widgets/my_pictures.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -25,38 +26,10 @@ class SearchScreen extends StatelessWidget {
         ],
       ),
       body: ListView(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(height: 180, width: 180, color: Colors.black),
-              Container(height: 180, width: 180, color: Colors.black),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(height: 180, width: 180, color: Colors.black),
-              Container(height: 180, width: 180, color: Colors.black),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(height: 180, width: 180, color: Colors.black),
-              Container(height: 180, width: 180, color: Colors.black),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(height: 180, width: 180, color: Colors.black),
-              Container(height: 180, width: 180, color: Colors.black),
-            ],
-          ),
+        children: const [
+          MyPictures(),
+          MyPictures(),
+          MyPictures(),
         ],
       ),
     );

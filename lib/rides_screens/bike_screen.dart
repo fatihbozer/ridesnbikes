@@ -10,77 +10,72 @@ class MotorcycleScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            child: IconButton(
+                onPressed: () {
+                  Scaffold.of(context).showBottomSheet((context) => const SelectBike());
+                },
+                icon: const Icon(Icons.motorcycle_outlined)),
+          ),
+        ],
+        title: const Text('selected Bikes'),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: ListView(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Align(
-                child: SizedBox(
-                  width: 200,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Scaffold.of(context).showBottomSheet((context) => const SelectBike());
-                    },
-                    child: const Text('choose Motorcycle'),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const RidePostWidget(
+        children: const [
+          RidePostWidget(
             username: "Fatih",
             likes: "213 Persons liked this.",
             comments: "Show Comments...",
             description: "Description",
             time: "13:00",
           ),
-          const RidePostWidget(
+          RidePostWidget(
             username: "Fatih",
             likes: "213 Persons liked this.",
             comments: "Show Comments...",
             description: "Description",
             time: "13:00",
           ),
-          const RidePostWidget(
+          RidePostWidget(
             username: "Fatih",
             likes: "213 Persons liked this.",
             comments: "Show Comments...",
             description: "Description",
             time: "13:00",
           ),
-          const RidePostWidget(
+          RidePostWidget(
             username: "Fatih",
             likes: "213 Persons liked this.",
             comments: "Show Comments...",
             description: "Description",
             time: "13:00",
           ),
-          const RidePostWidget(
+          RidePostWidget(
             username: "Fatih",
             likes: "213 Persons liked this.",
             comments: "Show Comments...",
             description: "Description",
             time: "13:00",
           ),
-          const RidePostWidget(
+          RidePostWidget(
             username: "Fatih",
             likes: "213 Persons liked this.",
             comments: "Show Comments...",
             description: "Description",
             time: "13:00",
           ),
-          const RidePostWidget(
+          RidePostWidget(
             username: "Fatih",
             likes: "213 Persons liked this.",
             comments: "Show Comments...",
             description: "Description",
             time: "13:00",
           ),
-          const RidePostWidget(
+          RidePostWidget(
             username: "Fatih",
             likes: "213 Persons liked this.",
             comments: "Show Comments...",

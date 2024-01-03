@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rides_screens/editprofile_screen.dart';
+import 'package:rides_n_bikes/rides_widgets/my_button.dart';
+import 'package:rides_n_bikes/rides_widgets/my_pictures.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -41,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Container(
             margin: const EdgeInsets.only(right: 16),
             child: IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               color: Colors.black,
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const EditProfile()));
@@ -60,12 +62,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 16), // Abstand vom oberen Rand
+                    const SizedBox(height: 16),
                     Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            //Zahl der Abonnenten
+
                             const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -77,10 +81,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Text('Followers'),
                               ],
                             ),
+
+                            //Profilbild
+
                             Container(
                               margin: const EdgeInsets.symmetric(horizontal: 16),
                               child: buildProfilPicture(),
                             ),
+
+                            // Zahl der Nutzer denen man folgt
+
                             const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -94,39 +104,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16), //Abstand zwischen Bild und Benutzername
+                        const SizedBox(height: 16),
+
+                        //Name in der App
+
                         Text(
                           userData['name'],
-                          style: TextStyle(fontFamily: 'Formula1bold'),
+                          style: const TextStyle(fontFamily: 'Formula1bold'),
                         ),
-                        Text("@${userData['username']}"),
-                        const SizedBox(height: 16), //Abstand zwischen Benutzername und Profil-Bio
+
+                        //Username in der App
+
+                        Text(
+                          "@${userData['username']}",
+                          style: TextStyle(color: Colors.grey[700]),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        //Bio im Profil
+
                         Text(
                           userData['bio'],
                           textAlign: TextAlign.center,
                         ),
+
                         const SizedBox(height: 16),
-                        Container(
-                          width: 100,
-                          height: 50,
-                          color: Colors.black,
-                        ), //Platzhalter für Motorradwidget
+
+                        //Button für Motorradwidget
+
+                        MyButton(text: 'Test', onTap: () {}),
+
                         const SizedBox(height: 16),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
-                          width: 150,
-                          height: 50,
-                          color: Colors.black,
-                        ),
-                        Container(
-                          width: 150,
-                          height: 50,
-                          color: Colors.black,
-                        ),
+                        MyButton(text: 'Test', onTap: () {}),
+                        MyButton(text: 'Test', onTap: () {})
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -148,45 +164,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                            height: 180,
-                            width: 180,
-                            child: Image(
-                              image: AssetImage('assets/images/harley-davidson1.jpg'),
-                              fit: BoxFit.cover,
-                            )),
-                        SizedBox(
-                            height: 180,
-                            width: 180,
-                            child: Image(
-                              image: AssetImage('assets/images/harley-davidson2.jpg'),
-                              fit: BoxFit.cover,
-                            )),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                            height: 180,
-                            width: 180,
-                            child: Image(
-                              image: AssetImage('assets/images/harley-davidson3.jpg'),
-                              fit: BoxFit.cover,
-                            )),
-                        SizedBox(
-                            height: 180,
-                            width: 180,
-                            child: Image(
-                              image: AssetImage('assets/images/harley-davidson4.jpg'),
-                              fit: BoxFit.cover,
-                            )),
-                      ],
-                    ),
+
+                    // Bilder für Beiträge
+
+                    const MyPictures(),
+                    const MyPictures(),
                   ],
                 ),
               ],

@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MainFeedPage extends StatefulWidget {
-  MainFeedPage({Key? key}) : super(key: key);
+  const MainFeedPage({Key? key}) : super(key: key);
 
   @override
   _MainFeedState createState() => _MainFeedState();

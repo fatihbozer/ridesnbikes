@@ -13,6 +13,7 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
   bool showLoginPage = true;
 
   void togglePages() {
+    //Methode um zwischen Anmelde- und Registrierungsseite umzuschalten
     setState(() {
       showLoginPage = !showLoginPage;
     });

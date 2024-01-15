@@ -13,16 +13,16 @@ class AuthPage extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              print("waiting");
+              //Ladeindikator anzeigen
               return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              print("error");
+              //Fehlermeldung anzeigen, wenn ein Fehler auftritt
               return const Text('Ein Fehler ist aufgetreten!');
             } else if (snapshot.hasData) {
-              print("logged in");
+              //Wenn Nutzer eingeloggt ist, Homepage anzeigen
               return MainFeedPage();
             } else {
-              print("not logged in");
+              //Wenn Nutzer nicht eingeloggt ist, Anmeldungs- oder Registrierungsseite anzeigen
               return const LoginOrRegister();
             }
           }),

@@ -14,19 +14,98 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  //Benutzer
   final currentUser = FirebaseAuth.instance.currentUser!;
 
-  /*Future<void> editField(String userData) async {
-    String newValue = "";
+  // Funktion zum Bearbeiten der Profilinformationen
+  Future<void> editProfile() async {
+    String newName = "";
+    String newBio = "";
+    String newUsername = "";
+
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Edit Profile"),
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        title: const Text("Edit Profile"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                decoration: const InputDecoration(labelText: 'New Username', border: OutlineInputBorder()),
+                onChanged: (value) {
+                  newUsername = value;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                decoration: const InputDecoration(labelText: 'New Name', border: OutlineInputBorder()),
+                onChanged: (value) {
+                  newName = value;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                decoration: const InputDecoration(labelText: 'New Bio', border: OutlineInputBorder()),
+                onChanged: (value) {
+                  newBio = value;
+                },
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          MyButton(
+            text: 'Cancel',
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          MyButton(
+            onTap: () async {
+              // Überprüfe, ob die nicht leeren Textfelder die Mindestlänge erreichen
+              bool isNameValid = newName.isEmpty || (newName.isNotEmpty && newName.length >= 3);
+              bool isUsernameValid = newUsername.isEmpty || (newUsername.isNotEmpty && newUsername.length >= 3);
+
+              if (isNameValid && isUsernameValid) {
+                // Aktualisiere nur die nicht leeren und gültigen Profilinformationen in der Datenbank
+                Map<String, dynamic> updateData = {};
+                if (newName.isNotEmpty) updateData['name'] = newName;
+                if (newBio.isNotEmpty) updateData['bio'] = newBio;
+                if (newUsername.isNotEmpty) updateData['username'] = newUsername;
+
+                await FirebaseFirestore.instance.collection("Users").doc(currentUser.email).update(updateData);
+                Navigator.pop(context);
+              } else {
+                // Zeige eine Meldung an, wenn die Mindestlänge für Name und Username nicht erreicht ist
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Please enter valid values for Name, Bio, and Username.'),
+                        Text('Minimum length for Name and Username is 3 characters.'),
+                      ],
+                    ),
+                  ),
+                );
+              }
+            },
+            text: 'Save',
+          ),
+        ],
       ),
     );
   }
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         //Button für Motorradwidget
 
-                        MyButton(text: 'Test', onTap: () {}),
+                        MyButton(text: 'edit Profile', onTap: editProfile),
 
                         const SizedBox(height: 16),
                       ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 ThemeData rideMode = ThemeData(
+  dialogBackgroundColor: Colors.white,
+  scaffoldBackgroundColor: Colors.white,
   colorScheme: const ColorScheme.light(
     primary: Color(0xFFB77F3E),
     onPrimary: Color(0xFFCFA472),

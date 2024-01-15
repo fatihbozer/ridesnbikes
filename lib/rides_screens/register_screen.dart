@@ -33,8 +33,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (passwordController.text != confirmPwController.text) {
       Navigator.pop(context);
-
       displayMessageToUser('Passwords dont match!', context);
+    } else if (usernameController.text.length < 3) {
+      Navigator.pop(context);
+      displayMessageToUser('Username must be at least 3 characters long!', context);
     } else {
       try {
         UserCredential? userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(

@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rides_widgets/my_pictures.dart';
 
 class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class SearchScreen extends StatelessWidget {
           IconButton(
             color: Colors.black,
             onPressed: () {
+              // Öffnet die Suchansicht mit einem benutzerdefinierten Such-Delegaten
               showSearch(
                 context: context,
                 delegate: CustomSearchDelegate(),
@@ -37,7 +39,6 @@ class SearchScreen extends StatelessWidget {
 }
 
 class CustomSearchDelegate extends SearchDelegate {
-  List<String> searchTerms = [];
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -62,38 +63,55 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var searchName in searchTerms) {
-      if (searchName.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(searchName);
-      }
+    if (query.isNotEmpty) {
+      return _buildSearchResults(query);
+    } else {
+      return Container(); // Leerer Container, wenn die Suchanfrage leer ist
     }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
-      },
-    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var searchName in searchTerms) {
-      if (searchName.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(searchName);
-      }
+    if (query.isNotEmpty) {
+      return _buildSearchResults(query);
+    } else {
+      return Container(); // Leerer Container, wenn die Suchanfrage leer ist
     }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
+  }
+
+  Widget _buildSearchResults(String query) {
+    return FutureBuilder(
+      // Firebase-Abfrage, um Benutzerdaten abzurufen
+      future: FirebaseFirestore.instance.collection('Users').where('username', isGreaterThanOrEqualTo: query).get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return const Center(
+            child: Text('Fehler beim Laden der Daten'),
+          );
+        } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(
+            child: Text('Keine Ergebnisse gefunden'),
+          );
+        } else {
+          // Ergebnisse als Listenelemente anzeigen
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              var result = snapshot.data!.docs[index]['username'];
+              return GestureDetector(
+                onTap: () => print('tapped'),
+                child: ListTile(
+                  leading: const CircleAvatar(),
+                  title: Text(result),
+                ),
+              );
+            },
+          );
+        }
       },
     );
   }

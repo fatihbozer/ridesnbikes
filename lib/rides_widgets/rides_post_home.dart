@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/rides_widgets/rides_widgets.dart';
 import 'package:rides_n_bikes/rides_widgets/write_comment.dart';
 import 'package:rides_n_bikes/rides_widgets/share_post.dart';
 
@@ -21,7 +20,10 @@ class RidePostWidget extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                child: buildPostPicture(),
+                child: CircleAvatar(
+                  radius: 30.0,
+                  backgroundImage: NetworkImage('https://i0.wp.com/sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png?ssl=1'),
+                ),
               ),
               const SizedBox(width: 10),
               Column(

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rides_screens/editprofile_screen.dart';
 import 'package:rides_n_bikes/rides_widgets/my_button.dart';
 import 'package:rides_n_bikes/rides_widgets/my_pictures.dart';
-import 'package:rides_n_bikes/rides_widgets/rides_widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -15,6 +14,9 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
+
+  //Profilbild bearbeiten
+  void selectImage() {}
 
   // Funktion zum Bearbeiten der Profilinformationen
   Future<void> editProfile() async {
@@ -165,7 +167,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                             Container(
                               margin: const EdgeInsets.symmetric(horizontal: 16),
-                              child: buildProfilPicture(),
+                              child: Stack(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 64.0,
+                                    backgroundImage: NetworkImage('https://i0.wp.com/sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png?ssl=1'),
+                                  ),
+                                  Positioned(
+                                    bottom: -10,
+                                    left: 80,
+                                    child: IconButton(
+                                      onPressed: selectImage,
+                                      icon: const Icon(Icons.add_a_photo),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
 
                             // Zahl der Nutzer denen man folgt

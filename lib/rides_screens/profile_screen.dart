@@ -1,9 +1,13 @@
+import 'dart:typed_data';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rides_screens/editprofile_screen.dart';
 import 'package:rides_n_bikes/rides_widgets/my_button.dart';
 import 'package:rides_n_bikes/rides_widgets/my_pictures.dart';
+import 'package:rides_n_bikes/rides_widgets/utils.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -14,9 +18,13 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
+  Uint8List? _image;
 
   //Profilbild bearbeiten
-  void selectImage() {}
+  void selectImage() async {
+    _image = await pickImage();
+    setState(() {});
+  }
 
   // Funktion zum Bearbeiten der Profilinformationen
   Future<void> editProfile() async {
@@ -169,16 +177,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               margin: const EdgeInsets.symmetric(horizontal: 16),
                               child: Stack(
                                 children: [
-                                  CircleAvatar(
-                                    radius: 64.0,
-                                    backgroundImage: NetworkImage('https://i0.wp.com/sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png?ssl=1'),
-                                  ),
+                                  _image != null
+                                      ? CircleAvatar(
+                                          radius: 64,
+                                          backgroundImage: MemoryImage(_image!),
+                                        )
+                                      : const CircleAvatar(
+                                          radius: 64.0,
+                                          backgroundImage: CachedNetworkImageProvider('https://i0.wp.com/sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png?ssl=1'),
+                                        ),
                                   Positioned(
                                     bottom: -10,
                                     left: 80,
-                                    child: IconButton(
-                                      onPressed: selectImage,
-                                      icon: const Icon(Icons.add_a_photo),
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      child: IconButton(
+                                        onPressed: selectImage,
+                                        icon: const Icon(Icons.add_a_photo),
+                                        color: Colors.black,
+                                      ),
                                     ),
                                   ),
                                 ],

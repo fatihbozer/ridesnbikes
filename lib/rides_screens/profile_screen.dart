@@ -72,15 +72,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         actions: [
           MyButton(
-            text: 'Cancel',
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          MyButton(
             onTap: () async {
               // Überprüfe, ob die nicht leeren Textfelder die Mindestlänge erreichen
               bool isNameValid = newName.isEmpty || (newName.isNotEmpty && newName.length >= 3);
@@ -111,6 +102,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
             },
             text: 'Save',
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          MyButton(
+            text: 'Cancel',
+            onTap: () {
+              Navigator.pop(context);
+            },
           ),
         ],
       ),

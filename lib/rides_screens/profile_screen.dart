@@ -5,9 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rides_screens/editprofile_screen.dart';
+import 'package:rides_n_bikes/rides_widgets/default_profile_image.dart';
 import 'package:rides_n_bikes/rides_widgets/my_button.dart';
 import 'package:rides_n_bikes/rides_widgets/my_pictures.dart';
 import 'package:rides_n_bikes/rides_widgets/utils.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -24,6 +26,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void selectImage() async {
     _image = await pickImage();
     setState(() {});
+  }
+
+  Future<void> uploadProfileImage(Uint8List imageBytes, String userEmail) async {
+    try {
+      print('Start uploading profile image...');
+      String fileName = 'profile_images/$userEmail.jpg';
+
+      await firebase_storage.FirebaseStorage.instance.ref(fileName).putData(imageBytes);
+
+      // Nach dem Upload kannst du den Download-URL abrufen, um es im Profil anzuzeigen oder es in der Firestore-Datenbank zu speichern.
+      String downloadURL = await firebase_storage.FirebaseStorage.instance.ref(fileName).getDownloadURL();
+
+      // Speichere den Download-URL in der Firestore-Datenbank oder aktualisiere das vorhandene Benutzerdokument.
+      await FirebaseFirestore.instance.collection("Users").doc(userEmail).update({
+        'profileImageUrl': downloadURL,
+      });
+      print('Profile image uploaded successfully!');
+    } catch (error) {
+      print('Error uploading profile image: $error');
+    }
   }
 
   @override
@@ -79,17 +101,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           radius: 64,
                                           backgroundImage: MemoryImage(_image!),
                                         )
-                                      : const CircleAvatar(
-                                          radius: 64.0,
-                                          backgroundImage: CachedNetworkImageProvider('https://i0.wp.com/sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png?ssl=1'),
-                                        ),
+                                      : userData.containsKey('profileImageUrl')
+                                          ? CircleAvatar(
+                                              radius: 64.0,
+                                              backgroundImage: CachedNetworkImageProvider(userData['profileImageUrl']),
+                                            )
+                                          : CircleAvatar(
+                                              radius: 64.0,
+                                              backgroundImage: CachedNetworkImageProvider(defaultProfileImageUrl),
+                                            ),
                                   Positioned(
                                     bottom: -10,
                                     left: 80,
                                     child: CircleAvatar(
                                       backgroundColor: Colors.white,
                                       child: IconButton(
-                                        onPressed: selectImage,
+                                        onPressed: () async {
+                                          Uint8List? pickedImage = await pickImage();
+                                          if (pickedImage != null) {
+                                            uploadProfileImage(pickedImage, currentUser.email!);
+                                            setState(() {
+                                              _image = pickedImage;
+                                            });
+                                          }
+                                        },
                                         icon: const Icon(Icons.add_a_photo),
                                         color: Colors.black,
                                       ),
@@ -98,7 +133,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ],
                               ),
                             ),
-
                             // Zahl der Nutzer denen man folgt
 
                             const Column(

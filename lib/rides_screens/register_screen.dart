@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
+import 'package:rides_n_bikes/rides_widgets/default_profile_image.dart';
 import 'package:rides_n_bikes/rides_widgets/rl_button.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_textfield.dart';
 
@@ -57,11 +58,14 @@ class _RegisterPageState extends State<RegisterPage> {
 //test
   Future<void> createUserDocument(UserCredential? userCredential) async {
     if (userCredential != null && userCredential.user != null) {
+      // Standard-Profilbild-URL
+
       await FirebaseFirestore.instance.collection("Users").doc(userCredential.user!.email).set({
         'email': userCredential.user!.email,
         'username': usernameController.text,
         'name': usernameController.text,
-        'bio': 'Hello, my name is ${usernameController.text} and I am new to this app.'
+        'bio': 'Hello, my name is ${usernameController.text} and I am new to this app.',
+        'profileImageUrl': defaultProfileImageUrl,
       });
     }
   }

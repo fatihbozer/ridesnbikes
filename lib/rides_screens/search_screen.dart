@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:rides_n_bikes/rides_widgets/default_profile_image.dart';
 import 'package:rides_n_bikes/rides_widgets/my_pictures.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -45,7 +47,7 @@ class CustomSearchDelegate extends SearchDelegate {
       IconButton(
         icon: const Icon(Icons.clear),
         onPressed: () {
-          query = '';
+          query = ''; // Aktion zum Löschen der Suchanfrage
         },
       ),
     ];
@@ -56,7 +58,7 @@ class CustomSearchDelegate extends SearchDelegate {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
       onPressed: () {
-        close(context, null);
+        close(context, null); // Schließt die Suchansicht und gibt `null` zurück
       },
     );
   }
@@ -64,7 +66,7 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     if (query.isNotEmpty) {
-      return _buildSearchResults(query);
+      return _buildSearchResults(query); // Zeigt Suchergebnisse basierend auf der aktuellen Anfrage an
     } else {
       return Container(); // Leerer Container, wenn die Suchanfrage leer ist
     }
@@ -73,12 +75,13 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     if (query.isNotEmpty) {
-      return _buildSearchResults(query);
+      return _buildSearchResults(query); // Zeigt Suchergebnisse basierend auf der aktuellen Anfrage an
     } else {
       return Container(); // Leerer Container, wenn die Suchanfrage leer ist
     }
   }
 
+  // Funktion zum Aufbau der Suchergebnisse
   Widget _buildSearchResults(String query) {
     return FutureBuilder(
       // Firebase-Abfrage, um Benutzerdaten abzurufen
@@ -101,11 +104,20 @@ class CustomSearchDelegate extends SearchDelegate {
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
-              var result = snapshot.data!.docs[index]['username'];
+              var userData = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              var result = userData['username'];
+              // Profilbild-URL oder Standardbild-URL, falls kein Profilbild vorhanden ist
+              var profileImageUrl = userData['profileImageUrl'] ?? defaultProfileImageUrl;
+
               return GestureDetector(
-                onTap: () => print('tapped'),
+                onTap: () {
+                  // Hier kannst du die Aktion implementieren, wenn auf ein Suchergebnis getippt wird
+                  print('Tapped on $result');
+                },
                 child: ListTile(
-                  leading: const CircleAvatar(),
+                  leading: CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(profileImageUrl),
+                  ),
                   title: Text(result),
                 ),
               );

@@ -1,46 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rides_n_bikes/rides_widgets/my_button.dart';
 
-class EditProfile extends StatelessWidget {
-  const EditProfile({super.key});
+class EditProfileScreen extends StatefulWidget {
+  @override
+  _EditProfileScreenState createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
+
+  final currentUser = FirebaseAuth.instance.currentUser!;
+
+  Future<void> editProfile(BuildContext context) async {
+    String newName = nameController.text;
+    String newBio = bioController.text;
+    String newUsername = usernameController.text;
+
+    // Überprüfe, ob die nicht leeren Textfelder die Mindestlänge erreichen
+    bool isNameValid = newName.isEmpty || (newName.isNotEmpty && newName.length >= 3);
+    bool isUsernameValid = newUsername.isEmpty || (newUsername.isNotEmpty && newUsername.length >= 3);
+
+    if (isNameValid && isUsernameValid) {
+      // Aktualisiere nur die nicht leeren und gültigen Profilinformationen in der Datenbank
+      Map<String, dynamic> updateData = {};
+      if (newName.isNotEmpty) updateData['name'] = newName;
+      if (newBio.isNotEmpty) updateData['bio'] = newBio;
+      if (newUsername.isNotEmpty) updateData['username'] = newUsername;
+
+      await FirebaseFirestore.instance.collection("Users").doc(currentUser.email).update(updateData);
+
+      // Optional: Zurück zum vorherigen Screen
+      Navigator.pop(context);
+    } else {
+      // Zeige eine Meldung an, wenn die Mindestlänge für Name und Username nicht erreicht ist
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Please enter valid values for Name, Bio, and Username.'),
+              Text('Minimum length for Name and Username is 3 characters.'),
+            ],
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text('Profile Settings'),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        body: Column(
+      appBar: AppBar(
+        title: const Text('Edit Profile'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text('Change name'),
-              onTap: () {},
+            TextField(
+              controller: usernameController,
+              decoration: const InputDecoration(labelText: 'New Username', border: OutlineInputBorder()),
             ),
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text('TEST'),
-              onTap: () {},
+            const SizedBox(height: 16),
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(labelText: 'New Name', border: OutlineInputBorder()),
             ),
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text('TEST'),
-              onTap: () {},
+            const SizedBox(height: 16),
+            TextField(
+              controller: bioController,
+              decoration: const InputDecoration(labelText: 'New Bio', border: OutlineInputBorder()),
             ),
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text('TEST'),
-              onTap: () {},
+            const SizedBox(height: 16),
+            MyButton(
+              text: 'Save',
+              onTap: () => editProfile(context),
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

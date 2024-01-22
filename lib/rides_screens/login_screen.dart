@@ -37,50 +37,54 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(height: 100, width: 100, child: const Image(image: AssetImage('assets/icon/logo.png'))),
-              const SizedBox(height: 32),
-              const Text(
-                "rides n' Bikes",
-                style: TextStyle(fontFamily: 'Formula1bold', fontSize: 28),
-              ),
-              const SizedBox(height: 32),
-              MyTextField(hintText: "E-Mail", obscureText: false, controller: emailController),
-              const SizedBox(height: 16),
-              MyTextField(hintText: "Password", obscureText: true, controller: passwordController),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: Theme.of(context).colorScheme.surface),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 32),
-              MyRLButton(text: 'Login', onTap: login),
-              const SizedBox(height: 16),
-              Row(
+      body: ListView(
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Dont have an account?  '),
-                  GestureDetector(
-                    onTap: widget.onTap,
-                    child: const Text(
-                      'Register here.',
-                      style: TextStyle(fontFamily: 'Formula1bold'),
-                    ),
+                  Container(height: 100, width: 100, child: const Image(image: AssetImage('assets/icon/logo.png'))),
+                  const SizedBox(height: 32),
+                  const Text(
+                    "rides n' Bikes",
+                    style: TextStyle(fontFamily: 'Formula1bold', fontSize: 28),
+                  ),
+                  const SizedBox(height: 32),
+                  MyTextField(hintText: "E-Mail", obscureText: false, controller: emailController),
+                  const SizedBox(height: 16),
+                  MyTextField(hintText: "Password", obscureText: true, controller: passwordController),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Forgot Password?',
+                        style: TextStyle(color: Theme.of(context).colorScheme.surface),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  MyRLButton(text: 'Login', onTap: login),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Dont have an account?  '),
+                      GestureDetector(
+                        onTap: widget.onTap,
+                        child: const Text(
+                          'Register here.',
+                          style: TextStyle(fontFamily: 'Formula1bold'),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/rides_widgets/write_comment.dart';
-import 'package:rides_n_bikes/rides_widgets/share_post.dart';
+import 'package:rides_n_bikes/rnb_Widgets/write_comment.dart';
+import 'package:rides_n_bikes/rnb_Widgets/share_post.dart';
 
 class RidePostWidget extends StatelessWidget {
   final String username;

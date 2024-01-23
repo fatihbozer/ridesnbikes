@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
-import 'package:rides_n_bikes/rides_widgets/Buttons/rl_button.dart';
-import 'package:rides_n_bikes/rides_widgets/TextField/rides_textfield.dart';
+import 'package:rides_n_bikes/rnb_Widgets/Buttons/rl_button.dart';
+import 'package:rides_n_bikes/rnb_Widgets/TextField/rides_textfield.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;

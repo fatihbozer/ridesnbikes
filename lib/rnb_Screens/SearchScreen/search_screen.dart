@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/rides_screens/ProfileScreen/Profile/ProfilePic/default_profile_image.dart';
-import 'package:rides_n_bikes/rides_widgets/my_pictures.dart';
+import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/default_profile_image.dart';
+import 'package:rides_n_bikes/rnb_Widgets/my_pictures.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({Key? key}) : super(key: key);

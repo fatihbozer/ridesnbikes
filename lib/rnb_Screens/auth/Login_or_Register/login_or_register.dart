@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/rides_screens/login_screen.dart';
-import 'package:rides_n_bikes/rides_screens/register_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/auth/Login_or_Register/Login/login_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/auth/Login_or_Register/Register/register_screen.dart';
 
 class LoginOrRegister extends StatefulWidget {
   const LoginOrRegister({super.key});

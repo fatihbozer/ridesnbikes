@@ -4,12 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/rides_screens/ProfileScreen/EditProfile/editprofile_screen.dart';
-import 'package:rides_n_bikes/rides_screens/ProfileScreen/Profile/ProfilePic/default_profile_image.dart';
-import 'package:rides_n_bikes/rides_widgets/Buttons/my_button.dart';
-import 'package:rides_n_bikes/rides_widgets/my_pictures.dart';
-import 'package:rides_n_bikes/rides_screens/ProfileScreen/Profile/ProfilePic/upload_profileimage.dart';
-import 'package:rides_n_bikes/rides_screens/ProfileScreen/Profile/ProfilePic/pick_image.dart';
+import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/EditProfile/editprofile_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/default_profile_image.dart';
+import 'package:rides_n_bikes/rnb_Widgets/Buttons/my_button.dart';
+import 'package:rides_n_bikes/rnb_Widgets/my_pictures.dart';
+import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/upload_profileimage.dart';
+import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/pick_image.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

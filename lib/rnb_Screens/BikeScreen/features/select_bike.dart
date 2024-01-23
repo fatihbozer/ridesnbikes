@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/rides_widgets/rides_bikechip.dart';
+import 'package:rides_n_bikes/rnb_Screens/BikeScreen/features/rides_bikechip.dart';
 
 class SelectBike extends StatelessWidget {
   const SelectBike({super.key});

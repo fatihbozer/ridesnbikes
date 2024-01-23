@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/auth/auth.dart';
-import 'package:rides_n_bikes/rides_screens/HomeScreen/Home/home_screen.dart';
-import 'package:rides_n_bikes/rides_screens/SearchScreen/search_screen.dart';
-import 'package:rides_n_bikes/rides_screens/PostScreen/post_screen.dart';
-import 'package:rides_n_bikes/rides_screens/BikeScreen/bike_screen.dart';
-import 'package:rides_n_bikes/rides_screens/ProfileScreen/Profile/profile_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/auth/auth.dart';
+import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Home/home_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/SearchScreen/search_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/PostScreen/post_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/BikeScreen/bike_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rides_n_bikes/theme/theme.dart';
 import 'firebase_options.dart';

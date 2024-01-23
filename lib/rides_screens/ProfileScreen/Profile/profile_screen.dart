@@ -4,12 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/rides_screens/editprofile_screen.dart';
-import 'package:rides_n_bikes/rides_widgets/default_profile_image.dart';
-import 'package:rides_n_bikes/rides_widgets/my_button.dart';
+import 'package:rides_n_bikes/rides_screens/ProfileScreen/EditProfile/editprofile_screen.dart';
+import 'package:rides_n_bikes/rides_screens/ProfileScreen/Profile/ProfilePic/default_profile_image.dart';
+import 'package:rides_n_bikes/rides_widgets/Buttons/my_button.dart';
 import 'package:rides_n_bikes/rides_widgets/my_pictures.dart';
-import 'package:rides_n_bikes/rides_widgets/utils.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:rides_n_bikes/rides_screens/ProfileScreen/Profile/ProfilePic/upload_profileimage.dart';
+import 'package:rides_n_bikes/rides_screens/ProfileScreen/Profile/ProfilePic/pick_image.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -26,26 +26,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void selectImage() async {
     _image = await pickImage();
     setState(() {});
-  }
-
-  Future<void> uploadProfileImage(Uint8List imageBytes, String userEmail) async {
-    try {
-      print('Start uploading profile image...');
-      String fileName = 'profile_images/$userEmail.jpg';
-
-      await firebase_storage.FirebaseStorage.instance.ref(fileName).putData(imageBytes);
-
-      // Nach dem Upload kannst du den Download-URL abrufen, um es im Profil anzuzeigen oder es in der Firestore-Datenbank zu speichern.
-      String downloadURL = await firebase_storage.FirebaseStorage.instance.ref(fileName).getDownloadURL();
-
-      // Speichere den Download-URL in der Firestore-Datenbank oder aktualisiere das vorhandene Benutzerdokument.
-      await FirebaseFirestore.instance.collection("Users").doc(userEmail).update({
-        'profileImageUrl': downloadURL,
-      });
-      print('Profile image uploaded successfully!');
-    } catch (error) {
-      print('Error uploading profile image: $error');
-    }
   }
 
   @override

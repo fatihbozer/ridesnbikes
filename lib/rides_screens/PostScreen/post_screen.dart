@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/rides_widgets/camera_button.dart';
+import 'package:rides_n_bikes/rides_widgets/Buttons/camera_button.dart';
 
 class EditScreen extends StatefulWidget {
   const EditScreen({super.key});

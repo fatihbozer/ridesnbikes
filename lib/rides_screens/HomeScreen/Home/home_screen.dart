@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/rides_screens/chat_screen.dart';
+import 'package:rides_n_bikes/rides_screens/HomeScreen/Chats/chat_screen.dart';
 import 'package:rides_n_bikes/rides_widgets/my_drawer.dart';
 import 'package:rides_n_bikes/rides_widgets/rides_post_home.dart';
 

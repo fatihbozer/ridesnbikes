@@ -9,7 +9,7 @@ import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/defau
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/my_button.dart';
 import 'package:rides_n_bikes/rnb_Widgets/my_pictures.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/upload_profileimage.dart';
-import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/pick_image.dart';
+import 'package:rides_n_bikes/rnb_Widgets/Imagepicker/pick_image.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

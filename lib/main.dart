@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rnb_Screens/auth/auth.dart';
 import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Home/home_screen.dart';
 import 'package:rides_n_bikes/rnb_Screens/SearchScreen/search_screen.dart';
-import 'package:rides_n_bikes/rnb_Screens/PostScreen/post_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/PostScreen/camera_screen.dart';
 import 'package:rides_n_bikes/rnb_Screens/BikeScreen/bike_screen.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -94,7 +94,7 @@ class _MainFeedState extends State<MainFeedPage> {
       case 1:
         return const SearchScreen();
       case 2:
-        return const EditScreen();
+        return const CameraScreen();
       case 3:
         return const MotorcycleScreen();
       case 4:

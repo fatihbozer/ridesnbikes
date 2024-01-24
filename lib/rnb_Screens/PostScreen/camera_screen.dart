@@ -1,16 +1,17 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/pick_image.dart';
+import 'package:rides_n_bikes/rnb_Screens/PostScreen/upload_screen.dart';
+import 'package:rides_n_bikes/rnb_Widgets/Imagepicker/pick_image.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/camera_button.dart';
 
-class EditScreen extends StatefulWidget {
-  const EditScreen({Key? key}) : super(key: key);
+class CameraScreen extends StatefulWidget {
+  const CameraScreen({Key? key}) : super(key: key);
 
   @override
-  State<EditScreen> createState() => _EditScreenState();
+  State<CameraScreen> createState() => _CameraScreenState();
 }
 
-class _EditScreenState extends State<EditScreen> {
+class _CameraScreenState extends State<CameraScreen> {
   late List<CameraDescription> cameras;
   late CameraController cameraController;
   int direction = 0;
@@ -70,14 +71,17 @@ class _EditScreenState extends State<EditScreen> {
             child: cameraButton(Icons.flip_camera_ios_outlined, Alignment.bottomLeft),
           ),
           GestureDetector(
-            onTap: () {
-              cameraController.takePicture().then((XFile? image) {
-                if (mounted) {
-                  if (image != null) {
-                    print('Picture saved to ${image.path}');
-                  }
-                }
-              });
+            onTap: () async {
+              XFile? capturedImage = await cameraController.takePicture();
+              if (mounted) {
+                print('Picture saved to ${capturedImage.path}');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UploadScreen(image: capturedImage),
+                  ),
+                );
+              }
             },
             child: cameraButton(Icons.camera_alt_outlined, Alignment.bottomCenter),
           ),

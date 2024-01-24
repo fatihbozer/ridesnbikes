@@ -33,7 +33,10 @@ class _UploadScreenState extends State<UploadScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          onPressed: removeImage,
+          onPressed: () {
+            removeImage();
+            Navigator.pop(context);
+          },
           icon: const Icon(
             Icons.arrow_back,
           ),

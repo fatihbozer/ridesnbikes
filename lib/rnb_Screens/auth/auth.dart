@@ -20,7 +20,7 @@ class AuthPage extends StatelessWidget {
               return const Text('Ein Fehler ist aufgetreten!');
             } else if (snapshot.hasData) {
               //Wenn Nutzer eingeloggt ist, Homepage anzeigen
-              return MainFeedPage();
+              return const MainFeedPage();
             } else {
               //Wenn Nutzer nicht eingeloggt ist, Anmeldungs- oder Registrierungsseite anzeigen
               return const LoginOrRegister();

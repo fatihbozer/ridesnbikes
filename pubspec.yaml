@@ -16,6 +16,7 @@ dependencies:
   cached_network_image: ^3.3.1
   firebase_storage: ^11.6.0
   camera: ^0.10.5+9
+  geolocator: ^10.1.0
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"

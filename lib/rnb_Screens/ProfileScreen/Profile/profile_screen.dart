@@ -9,7 +9,7 @@ import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/defau
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/my_button.dart';
 import 'package:rides_n_bikes/rnb_Widgets/my_pictures.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/upload_profileimage.dart';
-import 'package:rides_n_bikes/rnb_Widgets/Imagepicker/pick_image.dart';
+import 'package:rides_n_bikes/rnb_Widgets/Imagepicker/pick_profile_picture.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -24,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   //Profilbild bearbeiten
   void selectImage() async {
-    _image = await pickImage();
+    _image = await pickProfilePicture();
     setState(() {});
   }
 
@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       backgroundColor: Colors.white,
                                       child: IconButton(
                                         onPressed: () async {
-                                          Uint8List? pickedImage = await pickImage();
+                                          Uint8List? pickedImage = await pickProfilePicture();
                                           if (pickedImage != null) {
                                             uploadProfileImage(pickedImage, currentUser.email!);
                                             setState(() {

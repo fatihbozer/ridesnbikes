@@ -5,10 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:rides_n_bikes/main.dart';
-import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Home/home_screen.dart';
 
 class UploadScreen extends StatefulWidget {
   final currentUser = FirebaseAuth.instance.currentUser!;
@@ -32,20 +32,58 @@ class _UploadScreenState extends State<UploadScreen> {
     });
   }
 
-/*
-getUserCurrentLocation() async {
-  Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  List<Placemark> placeMarks = await Geolocator.placemarkFromCoordinates(position.latitude, position.longitude);
-  if (placeMarks.isNotEmpty) {
-    Placemark mPlaceMark = placeMarks[0];
-    String completeAddressInfo = '${mPlaceMark.subThoroughfare} ${mPlaceMark.thoroughfare}, ${mPlaceMark.subLocality} ${mPlaceMark.locality}, ${mPlaceMark.subAdministrativeArea} ${mPlaceMark.administrativeArea}, ${mPlaceMark.postalCode} ${mPlaceMark.country}';
-    String specificAddress = '${mPlaceMark.locality}, ${mPlaceMark.country}';
-    locationTextEditingController.text = specificAddress;
-  } else {
-    print('Keine Adresse gefunden');
+  Future<void> getUserCurrentLocation() async {
+    try {
+      // Bestimme die Position
+      Position position = await _determinePosition();
+
+      // Hole die Platzinformationen für die erhaltene Position
+      List<Placemark> placeMarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+
+      // Extrahiere die erste Platzmarkierung (Annahme: Es gibt mindestens eine Platzmarkierung)
+      Placemark mPlaceMark = placeMarks[0];
+
+      // Baue die vollständige Adresse
+      String completeAddressInfo = '${mPlaceMark.subThoroughfare} ${mPlaceMark.thoroughfare}, ${mPlaceMark.subLocality} ${mPlaceMark.locality}, ${mPlaceMark.subAdministrativeArea} ${mPlaceMark.administrativeArea}, ${mPlaceMark.postalCode} ${mPlaceMark.country}';
+
+      // Baue die spezifische Adresse
+      String specificAddress = '${mPlaceMark.locality}, ${mPlaceMark.country}';
+
+      // Setze die Adresse im Textfeld
+      locationTextEditingController.text = specificAddress;
+    } catch (e) {
+      // Behandle Fehler, z.B. keine Berechtigungen oder deaktivierte Ortungsdienste
+      print("Fehler beim Abrufen der Position: $e");
+      // Hier kannst du eine Benachrichtigung an den Benutzer senden oder andere Aktionen durchführen
+    }
   }
-}
-*/
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Teste, ob Ortungsdienste aktiviert sind
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      throw Exception('Ortungsdienste sind deaktiviert.');
+    }
+
+    // Überprüfe die Berechtigungen
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception('Ortungsberechtigungen verweigert.');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw Exception('Ortungsberechtigungen wurden dauerhaft verweigert.');
+    }
+
+    // Wenn wir hier sind, sind die Berechtigungen erteilt und wir können die Position abrufen
+    return await Geolocator.getCurrentPosition();
+  }
 
   Future<void> uploadPost() async {
     try {
@@ -161,7 +199,7 @@ getUserCurrentLocation() async {
                   width: 250,
                   alignment: Alignment.center,
                   child: TextButton.icon(
-                    onPressed: () {},
+                    onPressed: getUserCurrentLocation,
                     icon: const Icon(
                       Icons.location_on,
                       color: Colors.black,

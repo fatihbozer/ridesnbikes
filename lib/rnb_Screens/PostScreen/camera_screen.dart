@@ -1,8 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rnb_Screens/PostScreen/upload_screen.dart';
-import 'package:rides_n_bikes/rnb_Widgets/Imagepicker/pick_image.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/camera_button.dart';
+import 'package:rides_n_bikes/rnb_Widgets/Imagepicker/pick_profile_picture.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -86,7 +86,7 @@ class _CameraScreenState extends State<CameraScreen> {
             child: cameraButton(Icons.camera_alt_outlined, Alignment.bottomCenter),
           ),
           GestureDetector(
-            onTap: pickImage,
+            onTap: pickProfilePicture,
             child: cameraButton(Icons.photo, Alignment.bottomRight),
           ),
         ],

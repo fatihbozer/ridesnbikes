@@ -32,32 +32,6 @@ class _UploadScreenState extends State<UploadScreen> {
     });
   }
 
-  Future<void> getUserCurrentLocation() async {
-    try {
-      // Bestimme die Position
-      Position position = await _determinePosition();
-
-      // Hole die Platzinformationen für die erhaltene Position
-      List<Placemark> placeMarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-
-      // Extrahiere die erste Platzmarkierung (Annahme: Es gibt mindestens eine Platzmarkierung)
-      Placemark mPlaceMark = placeMarks[0];
-
-      // Baue die vollständige Adresse
-      String completeAddressInfo = '${mPlaceMark.subThoroughfare} ${mPlaceMark.thoroughfare}, ${mPlaceMark.subLocality} ${mPlaceMark.locality}, ${mPlaceMark.subAdministrativeArea} ${mPlaceMark.administrativeArea}, ${mPlaceMark.postalCode} ${mPlaceMark.country}';
-
-      // Baue die spezifische Adresse
-      String specificAddress = '${mPlaceMark.locality}, ${mPlaceMark.country}';
-
-      // Setze die Adresse im Textfeld
-      locationTextEditingController.text = specificAddress;
-    } catch (e) {
-      // Behandle Fehler, z.B. keine Berechtigungen oder deaktivierte Ortungsdienste
-      print("Fehler beim Abrufen der Position: $e");
-      // Hier kannst du eine Benachrichtigung an den Benutzer senden oder andere Aktionen durchführen
-    }
-  }
-
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -83,6 +57,32 @@ class _UploadScreenState extends State<UploadScreen> {
 
     // Wenn wir hier sind, sind die Berechtigungen erteilt und wir können die Position abrufen
     return await Geolocator.getCurrentPosition();
+  }
+
+  Future<void> getUserCurrentLocation() async {
+    try {
+      // Bestimme die Position
+      Position position = await _determinePosition();
+
+      // Hole die Platzinformationen für die erhaltene Position
+      List<Placemark> placeMarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+
+      // Extrahiere die erste Platzmarkierung (Annahme: Es gibt mindestens eine Platzmarkierung)
+      Placemark mPlaceMark = placeMarks[0];
+
+      // Baue die vollständige Adresse
+      String completeAddressInfo = '${mPlaceMark.subThoroughfare} ${mPlaceMark.thoroughfare}, ${mPlaceMark.subLocality} ${mPlaceMark.locality}, ${mPlaceMark.subAdministrativeArea} ${mPlaceMark.administrativeArea}, ${mPlaceMark.postalCode} ${mPlaceMark.country}';
+
+      // Baue die spezifische Adresse
+      String specificAddress = '${mPlaceMark.locality}, ${mPlaceMark.country}';
+
+      // Setze die Adresse im Textfeld
+      locationTextEditingController.text = specificAddress;
+    } catch (e) {
+      // Behandle Fehler, z.B. keine Berechtigungen oder deaktivierte Ortungsdienste
+      print("Fehler beim Abrufen der Position: $e");
+      // Hier kannst du eine Benachrichtigung an den Benutzer senden oder andere Aktionen durchführen
+    }
   }
 
   Future<void> uploadPost() async {

@@ -1,11 +1,7 @@
-import 'dart:typed_data';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rnb_Screens/PostScreen/upload_screen.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/camera_button.dart';
-import 'package:rides_n_bikes/rnb_Widgets/Imagepicker/pick_profile_picture.dart';
-
 import 'ImagePicker/file_picker.dart';
 
 class CameraScreen extends StatefulWidget {

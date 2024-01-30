@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Chats/chat_screen.dart';
 import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Home/my_drawer.dart';
-import 'package:rides_n_bikes/rnb_Widgets/rides_post_home.dart';
+import 'package:rides_n_bikes/rnb_Widgets/post_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -33,61 +33,29 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: ListView(
         children: const [
-          RidePostWidget(
+          PostCard(
             username: "Fatih",
-            likes: "213 Persons liked this.",
-            comments: "Show Comments...",
+            likes: "213 likes",
+            comments: "23 comments",
             description: "Description",
-            time: "13:00",
+            date: "30/01/24",
+            location: "Stuttgart, Germany",
           ),
-          RidePostWidget(
+          PostCard(
             username: "Fatih",
-            likes: "213 Persons liked this.",
-            comments: "Show Comments...",
+            likes: "213 likes",
+            comments: "23 comments",
             description: "Description",
-            time: "13:00",
+            date: "30/01/24",
+            location: "Stuttgart, Germany",
           ),
-          RidePostWidget(
+          PostCard(
             username: "Fatih",
-            likes: "213 Persons liked this.",
-            comments: "Show Comments...",
+            likes: "213 likes",
+            comments: "23 comments",
             description: "Description",
-            time: "13:00",
-          ),
-          RidePostWidget(
-            username: "Fatih",
-            likes: "213 Persons liked this.",
-            comments: "Show Comments...",
-            description: "Description",
-            time: "13:00",
-          ),
-          RidePostWidget(
-            username: "Fatih",
-            likes: "213 Persons liked this.",
-            comments: "Show Comments...",
-            description: "Description",
-            time: "13:00",
-          ),
-          RidePostWidget(
-            username: "Fatih",
-            likes: "213 Persons liked this.",
-            comments: "Show Comments...",
-            description: "Description",
-            time: "13:00",
-          ),
-          RidePostWidget(
-            username: "Fatih",
-            likes: "213 Persons liked this.",
-            comments: "Show Comments...",
-            description: "Description",
-            time: "13:00",
-          ),
-          RidePostWidget(
-            username: "Fatih",
-            likes: "213 Persons liked this.",
-            comments: "Show Comments...",
-            description: "Description",
-            time: "13:00",
+            date: "30/01/24",
+            location: "Stuttgart, Germany",
           ),
         ],
       ),

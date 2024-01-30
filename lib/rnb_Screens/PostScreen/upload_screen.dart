@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -101,11 +100,13 @@ class _UploadScreenState extends State<UploadScreen> {
           final userPostsCollection = FirebaseFirestore.instance.collection('Users').doc(currentUser.email).collection('posts');
 
           final postDocRef = await userPostsCollection.add({
+            'username': currentUser,
             'imageUrl': imageUrl,
             'description': descriptionTextEditingController.text,
             'location': locationTextEditingController.text,
             'timestamp': FieldValue.serverTimestamp(),
-            'likes': {}
+            'likes': {},
+            'comments': {},
           });
 
           print('Beitrag hochgeladen mit ID: ${postDocRef.id}');

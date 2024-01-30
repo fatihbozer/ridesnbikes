@@ -8,7 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:rides_n_bikes/main.dart';
+import 'package:rides_n_bikes/mainfeed.dart';
 
 class UploadScreen extends StatefulWidget {
   final currentUser = FirebaseAuth.instance.currentUser!;

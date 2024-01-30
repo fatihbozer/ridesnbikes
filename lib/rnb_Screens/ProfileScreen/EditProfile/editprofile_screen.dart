@@ -16,13 +16,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   Future<void> editProfile(BuildContext context) async {
-    String newName = nameController.text;
-    String newBio = bioController.text;
-    String newUsername = usernameController.text;
+    String newName = nameController.text.trim();
+    String newBio = bioController.text.trim();
+    String newUsername = usernameController.text.trim();
 
     // Überprüfe, ob die nicht leeren Textfelder die Mindestlänge erreichen
-    bool isNameValid = newName.isEmpty || (newName.isNotEmpty && newName.length >= 3);
-    bool isUsernameValid = newUsername.isEmpty || (newUsername.isNotEmpty && newUsername.length >= 3);
+    bool isNameValid = newName.isNotEmpty && newName.length >= 3;
+    bool isUsernameValid = newUsername.isNotEmpty && newUsername.length >= 3 && newUsername.length <= 20; // Hinzugefügt: Überprüfung für die maximale Länge
 
     if (isNameValid && isUsernameValid) {
       // Aktualisiere nur die nicht leeren und gültigen Profilinformationen in der Datenbank
@@ -44,6 +44,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             children: [
               Text('Please enter valid values for Name, Bio, and Username.'),
               Text('Minimum length for Name and Username is 3 characters.'),
+              Text('Username must be 20 characters or less.'), // Hinzugefügt: Meldung für die maximale Länge
             ],
           ),
         ),

@@ -97,10 +97,13 @@ class _UploadScreenState extends State<UploadScreen> {
 
         final user = FirebaseAuth.instance.currentUser;
         if (user != null) {
+          // Hier wird der Benutzername aus der Firestore-Sammlung abgerufen
+          final userData = await FirebaseFirestore.instance.collection('Users').doc(user.email).get();
+          final username = userData['username'];
           final userPostsCollection = FirebaseFirestore.instance.collection('Users').doc(currentUser.email).collection('posts');
 
           final postDocRef = await userPostsCollection.add({
-            'username': currentUser,
+            'username': username,
             'imageUrl': imageUrl,
             'description': descriptionTextEditingController.text,
             'location': locationTextEditingController.text,

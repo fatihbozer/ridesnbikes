@@ -1,18 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rides_n_bikes/rnb_Widgets/write_comment.dart';
 import 'package:rides_n_bikes/rnb_Widgets/share_post.dart';
+import 'package:intl/intl.dart';
 
 class PostCard extends StatelessWidget {
-  final String username;
-  final String date;
-  final String likes;
-  final String comments;
-  final String description;
-  final String location;
-
-  const PostCard({required this.username, this.date = "12:00", required this.likes, required this.comments, required this.description, required this.location, super.key});
-
+  final snap;
+  const PostCard({
+    required this.snap,
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,9 +24,9 @@ class PostCard extends StatelessWidget {
           ).copyWith(right: 0),
           child: Row(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 30.0,
-                backgroundImage: CachedNetworkImageProvider('https://i0.wp.com/sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png?ssl=1'),
+                backgroundImage: CachedNetworkImageProvider(snap['imageUrl']),
               ),
               Expanded(
                 child: Padding(
@@ -38,24 +36,21 @@ class PostCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        username,
+                        snap['username'],
                         style: const TextStyle(fontFamily: 'Formula1bold'),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            date,
-                            style: const TextStyle(fontSize: 12),
-                          ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               const Icon(
                                 Icons.location_on,
                                 size: 14,
                               ),
                               Text(
-                                location,
+                                snap['location'],
                                 style: const TextStyle(fontSize: 12),
                               ),
                             ],
@@ -77,7 +72,7 @@ class PostCard extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.4,
           width: MediaQuery.of(context).size.height * 0.4,
           child: Image.network(
-            'https://www.harley-davidson.com/content/dam/h-d/images/promo-images/2024/hero-cards/2-up/reveal-rg-hc2.jpg?impolicy=myresize&rw=1000',
+            snap['imageUrl'],
             fit: BoxFit.cover,
           ),
         ),
@@ -121,21 +116,35 @@ class PostCard extends StatelessWidget {
 
         SizedBox(
           width: MediaQuery.of(context).size.height * 0.4,
-          child: Row(
+          child: Column(
             children: [
-              Text(
-                username,
-                style: const TextStyle(fontFamily: 'Formula1bold', overflow: TextOverflow.ellipsis),
+              Container(
+                padding: const EdgeInsets.only(
+                  top: 8,
+                  bottom: 8,
+                ),
+                child: Text(
+                  '${snap['likes'].length} likes..',
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(description),
+              Row(
+                children: [
+                  Text(
+                    snap['username'],
+                    style: const TextStyle(fontFamily: 'Formula1bold', overflow: TextOverflow.ellipsis),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Text(snap['description']),
+                  ),
+                ],
               ),
             ],
           ),
         ),
 
-        // LIKES AND COMMENTS
+        //COMMENTS
 
         Container(
           width: MediaQuery.of(context).size.height * 0.4,
@@ -144,7 +153,7 @@ class PostCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                '$likes and $comments..',
+                '${snap['likes'].length} likes..',
                 style: const TextStyle(color: Colors.grey),
               ),
             ],

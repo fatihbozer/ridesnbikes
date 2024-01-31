@@ -58,8 +58,6 @@ class _RegisterPageState extends State<RegisterPage> {
 //test
   Future<void> createUserDocument(UserCredential? userCredential) async {
     if (userCredential != null && userCredential.user != null) {
-      // Standard-Profilbild-URL
-
       await FirebaseFirestore.instance.collection("Users").doc(userCredential.user!.email).set({
         'email': userCredential.user!.email,
         'username': usernameController.text,

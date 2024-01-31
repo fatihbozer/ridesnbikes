@@ -25,32 +25,7 @@ class MotorcycleScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: ListView(
-        children: const [
-          PostCard(
-            username: "Fatih",
-            likes: "213 likes",
-            comments: "23 comments",
-            description: "Description",
-            date: "30/01/24",
-            location: "Stuttgart, Germany",
-          ),
-          PostCard(
-            username: "Fatih",
-            likes: "213 likes",
-            comments: "23 comments",
-            description: "Description",
-            date: "30/01/24",
-            location: "Stuttgart, Germany",
-          ),
-          PostCard(
-            username: "Fatih",
-            likes: "213 likes",
-            comments: "23 comments",
-            description: "Description",
-            date: "30/01/24",
-            location: "Stuttgart, Germany",
-          ),
-        ],
+        children: const [],
       ),
     );
   }

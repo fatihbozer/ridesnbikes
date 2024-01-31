@@ -17,6 +17,19 @@ Future<void> uploadProfileImage(Uint8List imageBytes, String userEmail) async {
     await FirebaseFirestore.instance.collection("Users").doc(userEmail).update({
       'profileImageUrl': downloadURL,
     });
+
+    // Beiträge des Benutzers abrufen
+    final userPostsCollection = FirebaseFirestore.instance.collection('Users').doc(userEmail).collection('posts');
+    final userPosts = await userPostsCollection.get();
+
+    // Profilbild-URL in jedem Beitrag aktualisieren
+    for (final postDoc in userPosts.docs) {
+      final postId = postDoc.id;
+      await userPostsCollection.doc(postId).update({
+        'profileImageUrl': downloadURL,
+      });
+    }
+
     print('Profile image uploaded successfully!');
   } catch (error) {
     print('Error uploading profile image: $error');

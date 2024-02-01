@@ -58,7 +58,7 @@ class CustomSearchDelegate extends SearchDelegate {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
       onPressed: () {
-        close(context, null); // Schließt die Suchansicht und gibt `null` zurück
+        Navigator.pop(context, null); // Schließt die Suchansicht und gibt `null` zurück
       },
     );
   }
@@ -84,8 +84,7 @@ class CustomSearchDelegate extends SearchDelegate {
   // Funktion zum Aufbau der Suchergebnisse
   Widget _buildSearchResults(String query) {
     return FutureBuilder(
-      // Firebase-Abfrage, um Benutzerdaten abzurufen
-      future: FirebaseFirestore.instance.collection('Users').where('username', isGreaterThanOrEqualTo: query).get(),
+      future: FirebaseFirestore.instance.collection('Users').get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -95,16 +94,23 @@ class CustomSearchDelegate extends SearchDelegate {
           return const Center(
             child: Text('Fehler beim Laden der Daten'),
           );
-        } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(
-            child: Text('Keine Ergebnisse gefunden'),
-          );
         } else {
-          // Ergebnisse als Listenelemente anzeigen
+          final List<DocumentSnapshot> allUsers = snapshot.data!.docs;
+          final List<DocumentSnapshot> matchingUsers = allUsers.where((user) {
+            final String username = user['username'].toString().toLowerCase();
+            return username.contains(query.toLowerCase());
+          }).toList();
+
+          if (matchingUsers.isEmpty) {
+            return const Center(
+              child: Text('Keine Ergebnisse gefunden'),
+            );
+          }
+
           return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
+            itemCount: matchingUsers.length,
             itemBuilder: (context, index) {
-              var userData = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              var userData = matchingUsers[index].data() as Map<String, dynamic>;
               var result = userData['username'];
               // Profilbild-URL oder Standardbild-URL, falls kein Profilbild vorhanden ist
               var profileImageUrl = userData['profileImageUrl'] ?? defaultProfileImageUrl;

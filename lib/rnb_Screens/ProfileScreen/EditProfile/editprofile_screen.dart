@@ -33,6 +33,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       await FirebaseFirestore.instance.collection("Users").doc(currentUser.email).update(updateData);
 
+      // Beiträge des Benutzers abrufen
+      final userPostsCollection = FirebaseFirestore.instance.collection('Users').doc(currentUser.email).collection('posts');
+      final userPosts = await userPostsCollection.get();
+
+      // Benutzernamen in jedem Beitrag aktualisieren
+      for (final postDoc in userPosts.docs) {
+        final postId = postDoc.id;
+        await userPostsCollection.doc(postId).update({
+          'username': newUsername,
+        });
+      }
+
       // Optional: Zurück zum vorherigen Screen
       Navigator.pop(context);
     } else {

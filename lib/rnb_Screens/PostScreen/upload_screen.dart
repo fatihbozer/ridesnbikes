@@ -110,11 +110,16 @@ class _UploadScreenState extends State<UploadScreen> {
             'description': descriptionTextEditingController.text,
             'location': locationTextEditingController.text,
             'timestamp': FieldValue.serverTimestamp(),
-            'likes': {},
-            'comments': {},
+            'likes': [],
           });
 
+          final postId = postDocRef.id;
+
           print('Beitrag hochgeladen mit ID: ${postDocRef.id}');
+
+          await postDocRef.update({
+            'postId': postId
+          });
 
           // Optional: Hier könntest du zur Hauptseite oder einer anderen Seite navigieren
 

@@ -1,18 +1,32 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:rides_n_bikes/rnb_Widgets/like_animation.dart';
 import 'package:rides_n_bikes/rnb_Widgets/write_comment.dart';
 import 'package:rides_n_bikes/rnb_Widgets/share_post.dart';
 import 'package:intl/intl.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final snap;
   const PostCard({
     required this.snap,
     super.key,
   });
+
+  @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  bool isLikeAnimating = false;
+
   @override
   Widget build(BuildContext context) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    bool isCurrentUserLiked = widget.snap['likes'].contains(currentUser?.uid);
+
     return Column(
       children: [
         //HEADER SECTION
@@ -26,7 +40,7 @@ class PostCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30.0,
-                backgroundImage: CachedNetworkImageProvider(snap['profileImageUrl']),
+                backgroundImage: CachedNetworkImageProvider(widget.snap['profileImageUrl']),
               ),
               Expanded(
                 child: Padding(
@@ -36,7 +50,7 @@ class PostCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        snap['username'],
+                        widget.snap['username'],
                         style: const TextStyle(fontFamily: 'Formula1bold'),
                       ),
                       Row(
@@ -50,7 +64,7 @@ class PostCard extends StatelessWidget {
                                 size: 14,
                               ),
                               Text(
-                                snap['location'],
+                                widget.snap['location'],
                                 style: const TextStyle(fontSize: 12),
                               ),
                             ],
@@ -68,25 +82,77 @@ class PostCard extends StatelessWidget {
 
         // IMAGE SECTION
 
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.4,
-          width: MediaQuery.of(context).size.height * 0.4,
-          child: Image.network(
-            snap['imageUrl'],
-            fit: BoxFit.cover,
+        GestureDetector(
+          onDoubleTap: () {
+            setState(() {
+              isLikeAnimating = true;
+            });
+
+            // Überprüfe, ob der Benutzer den Beitrag bereits geliked hat
+            if (isCurrentUserLiked) {
+              // Entferne Like aus der Datenbank
+              removeLikeFromPost(widget.snap['postId']);
+            } else {
+              // Füge Like zur Datenbank hinzu
+              addLikeToPost(widget.snap['postId']);
+            }
+          },
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.4,
+                width: MediaQuery.of(context).size.height * 0.4,
+                child: Image.network(
+                  widget.snap['imageUrl'],
+                  fit: BoxFit.cover,
+                ),
+              ),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: isLikeAnimating ? 1 : 0,
+                child: LikeAnimation(
+                  isAnimating: isLikeAnimating,
+                  duration: const Duration(
+                    milliseconds: 400,
+                  ),
+                  onEnd: () {
+                    setState(() {
+                      isLikeAnimating = false;
+                    });
+                  },
+                  child: const Icon(
+                    Icons.favorite,
+                    color: Colors.white,
+                    size: 120,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
 
-        // LIKE COMMENT SECTION
+        // LIKE COMMENT ICONS SECTION
 
         SizedBox(
           width: MediaQuery.of(context).size.height * 0.4,
           child: Row(
             children: [
-              IconButton(
-                icon: const Icon(Icons.favorite),
-                onPressed: () {},
-              ),
+              LikeAnimation(
+                  isAnimating: isCurrentUserLiked,
+                  smallLike: true,
+                  child: IconButton(
+                    icon: const Icon(Icons.favorite),
+                    onPressed: () {
+                      if (isCurrentUserLiked) {
+                        // Entferne Like aus der Datenbank
+                        removeLikeFromPost(widget.snap['postId']);
+                      } else {
+                        // Füge Like zur Datenbank hinzu
+                        addLikeToPost(widget.snap['postId']);
+                      }
+                    },
+                  )),
               IconButton(
                 icon: const Icon(Icons.comment),
                 onPressed: () {
@@ -120,20 +186,20 @@ class PostCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${snap['likes'].length} users liked this..',
+                '${widget.snap['likes'].length} user liked this..',
                 style: const TextStyle(color: Colors.grey, fontSize: 12),
               ),
               Padding(padding: EdgeInsets.only(top: 8)),
               Row(
                 children: [
                   Text(
-                    snap['username'],
+                    widget.snap['username'],
                     style: const TextStyle(fontFamily: 'Formula1bold', overflow: TextOverflow.ellipsis),
                   ),
                   const SizedBox(width: 10.0), // Abstand zwischen Username und Beschreibung
                   Expanded(
                     child: Text(
-                      snap['description'],
+                      widget.snap['description'],
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -154,12 +220,12 @@ class PostCard extends StatelessWidget {
             children: [
               Text(
                 DateFormat.yMMMd().format(
-                  snap['timestamp'].toDate(),
+                  widget.snap['timestamp'].toDate(),
                 ),
                 style: TextStyle(color: Colors.grey, fontSize: 12),
               ),
               Text(
-                '${snap['likes'].length} likes..',
+                '${widget.snap['likes'].length} likes..',
                 style: const TextStyle(color: Colors.grey),
               ),
             ],

@@ -112,31 +112,31 @@ class PostCard extends StatelessWidget {
           ),
         ),
 
-        //DESCRIPTION
+        //LIKES AND DESCRIPTION
 
         SizedBox(
           width: MediaQuery.of(context).size.height * 0.4,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.only(
-                  top: 8,
-                  bottom: 8,
-                ),
-                child: Text(
-                  '${snap['likes'].length} likes..',
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
-                ),
+              Text(
+                '${snap['likes'].length} users liked this..',
+                style: const TextStyle(color: Colors.grey, fontSize: 12),
               ),
+              Padding(padding: EdgeInsets.only(top: 8)),
               Row(
                 children: [
                   Text(
                     snap['username'],
                     style: const TextStyle(fontFamily: 'Formula1bold', overflow: TextOverflow.ellipsis),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: Text(snap['description']),
+                  const SizedBox(width: 10.0), // Abstand zwischen Username und Beschreibung
+                  Expanded(
+                    child: Text(
+                      snap['description'],
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
@@ -150,8 +150,14 @@ class PostCard extends StatelessWidget {
           width: MediaQuery.of(context).size.height * 0.4,
           padding: const EdgeInsets.only(top: 8),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Text(
+                DateFormat.yMMMd().format(
+                  snap['timestamp'].toDate(),
+                ),
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              ),
               Text(
                 '${snap['likes'].length} likes..',
                 style: const TextStyle(color: Colors.grey),

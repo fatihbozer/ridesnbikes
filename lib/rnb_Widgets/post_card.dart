@@ -2,11 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import 'package:rides_n_bikes/rnb_Screens/CommentScreen/comment_screen.dart';
 import 'package:rides_n_bikes/rnb_Widgets/like_animation.dart';
-import 'package:rides_n_bikes/rnb_Widgets/write_comment.dart';
-import 'package:rides_n_bikes/rnb_Widgets/share_post.dart';
-import 'package:intl/intl.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
@@ -155,15 +152,15 @@ class _PostCardState extends State<PostCard> {
                   )),
               IconButton(
                 icon: const Icon(Icons.comment),
-                onPressed: () {
-                  Scaffold.of(context).showBottomSheet((context) => const PostComment());
-                },
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CommentScreen(),
+                  ),
+                ),
               ),
               IconButton(
                 icon: const Icon(Icons.send),
-                onPressed: () {
-                  Scaffold.of(context).showBottomSheet((context) => const PostShare());
-                },
+                onPressed: () {},
               ),
               Expanded(
                 child: Align(

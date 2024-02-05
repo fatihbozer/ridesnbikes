@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rides_n_bikes/mainfeed.dart';
-import 'package:rides_n_bikes/rnb_Screens/auth/Login_or_Register/login_or_register.dart';
+import 'package:rides_n_bikes/rnb_Screens/auth/Login_or_Register/Login/login_screen.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -17,13 +17,13 @@ class AuthPage extends StatelessWidget {
               return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               //Fehlermeldung anzeigen, wenn ein Fehler auftritt
-              return const Text('Ein Fehler ist aufgetreten!');
+              return Text('${snapshot.error}');
             } else if (snapshot.hasData) {
               //Wenn Nutzer eingeloggt ist, Homepage anzeigen
               return const MainFeedPage();
             } else {
               //Wenn Nutzer nicht eingeloggt ist, Anmeldungs- oder Registrierungsseite anzeigen
-              return const LoginOrRegister();
+              return const LoginPage();
             }
           }),
     );

@@ -1,13 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
+import 'package:rides_n_bikes/mainfeed.dart';
+import 'package:rides_n_bikes/resources/auth_methods.dart';
+import 'package:rides_n_bikes/rnb_Screens/auth/Login_or_Register/Register/register_screen.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/rl_button.dart';
 import 'package:rides_n_bikes/rnb_Widgets/TextField/rides_textfield.dart';
 
 class LoginPage extends StatefulWidget {
-  final void Function()? onTap;
-
-  const LoginPage({super.key, required this.onTap});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -15,75 +15,90 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
-
   TextEditingController passwordController = TextEditingController();
+  bool _isLoading = false;
 
-  void login() async {
-    showDialog(
-      context: context,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(),
-      ),
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+      email: emailController.text,
+      password: passwordController.text,
     );
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
-      if (context.mounted) Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      displayMessageToUser(e.code, context);
+    if (res == 'success') {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => const MainFeedPage())));
+    } else {
+      displayMessageToUser(res, context);
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+      body: Stack(
         children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(height: 100, width: 100, child: const Image(image: AssetImage('assets/icon/logo.png'))),
-                  const SizedBox(height: 32),
-                  const Text(
-                    "rides n' Bikes",
-                    style: TextStyle(fontFamily: 'Formula1bold', fontSize: 28),
-                  ),
-                  const SizedBox(height: 32),
-                  MyTextField(hintText: "E-Mail", obscureText: false, controller: emailController),
-                  const SizedBox(height: 16),
-                  MyTextField(hintText: "Password", obscureText: true, controller: passwordController),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Theme.of(context).colorScheme.surface),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  MyRLButton(text: 'Login', onTap: login),
-                  const SizedBox(height: 16),
-                  Row(
+          ListView(
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Dont have an account?  '),
-                      GestureDetector(
-                        onTap: widget.onTap,
-                        child: const Text(
-                          'Register here.',
-                          style: TextStyle(fontFamily: 'Formula1bold'),
-                        ),
+                      const SizedBox(height: 100, width: 100, child: Image(image: AssetImage('assets/icon/logo.png'))),
+                      const SizedBox(height: 32),
+                      const Text(
+                        "rides n' Bikes",
+                        style: TextStyle(fontFamily: 'Formula1bold', fontSize: 28),
+                      ),
+                      const SizedBox(height: 32),
+                      MyTextField(hintText: "E-Mail", obscureText: false, controller: emailController),
+                      const SizedBox(height: 16),
+                      MyTextField(hintText: "Password", obscureText: true, controller: passwordController),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Forgot Password?',
+                            style: TextStyle(color: Theme.of(context).colorScheme.surface),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 32),
+                      MyRLButton(text: 'Login', onTap: loginUser),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('Dont have an account?  '),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
+                            },
+                            child: const Text(
+                              'Register here.',
+                              style: TextStyle(fontFamily: 'Formula1bold'),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
+              ),
+            ],
+          ),
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(),
               ),
             ),
-          ),
         ],
       ),
     );

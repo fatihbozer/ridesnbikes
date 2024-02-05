@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rides_n_bikes/providers/user_provider.dart';
 import 'package:rides_n_bikes/rnb_Screens/BikeScreen/bike_screen.dart';
 import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Home/home_screen.dart';
 import 'package:rides_n_bikes/rnb_Screens/PostScreen/camera_screen.dart';
@@ -9,11 +11,22 @@ class MainFeedPage extends StatefulWidget {
   const MainFeedPage({Key? key}) : super(key: key);
 
   @override
-  _MainFeedState createState() => _MainFeedState();
+  State<MainFeedPage> createState() => _MainFeedState();
 }
 
 class _MainFeedState extends State<MainFeedPage> {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    addData();
+  }
+
+  addData() async {
+    UserProvider userProvider = Provider.of(context, listen: false);
+    await userProvider.refreshUser();
+  }
 
   @override
   Widget build(BuildContext context) {

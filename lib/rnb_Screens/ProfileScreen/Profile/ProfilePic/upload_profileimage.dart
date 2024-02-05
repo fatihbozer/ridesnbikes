@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-Future<void> uploadProfileImage(Uint8List imageBytes, String userEmail) async {
+Future<void> uploadProfileImage(Uint8List imageBytes, String uid) async {
   try {
     print('Start uploading profile image...');
-    String fileName = 'profile_images/$userEmail.jpg';
+    String fileName = 'profile_images/$uid.jpg';
 
     await firebase_storage.FirebaseStorage.instance.ref(fileName).putData(imageBytes);
 
@@ -14,12 +14,12 @@ Future<void> uploadProfileImage(Uint8List imageBytes, String userEmail) async {
     String downloadURL = await firebase_storage.FirebaseStorage.instance.ref(fileName).getDownloadURL();
 
     // Speichere den Download-URL in der Firestore-Datenbank oder aktualisiere das vorhandene Benutzerdokument.
-    await FirebaseFirestore.instance.collection("Users").doc(userEmail).update({
+    await FirebaseFirestore.instance.collection("Users").doc(uid).update({
       'profileImageUrl': downloadURL,
     });
 
     // Beiträge des Benutzers abrufen
-    final userPostsCollection = FirebaseFirestore.instance.collection('Users').doc(userEmail).collection('posts');
+    final userPostsCollection = FirebaseFirestore.instance.collection('Users').doc(uid).collection('posts');
     final userPosts = await userPostsCollection.get();
 
     // Profilbild-URL in jedem Beitrag aktualisieren

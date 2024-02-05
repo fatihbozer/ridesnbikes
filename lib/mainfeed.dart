@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rides_n_bikes/providers/user_provider.dart';
@@ -87,7 +88,7 @@ class _MainFeedState extends State<MainFeedPage> {
       case 3:
         return const MotorcycleScreen();
       case 4:
-        return const ProfileScreen();
+        return ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid);
       default:
         return Container();
     }

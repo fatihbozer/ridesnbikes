@@ -1,9 +1,9 @@
 import 'dart:typed_data';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rides_n_bikes/helper/helper_functions.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/EditProfile/editprofile_screen.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/default_profile_image.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/my_button.dart';
@@ -12,20 +12,43 @@ import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/uploa
 import 'package:rides_n_bikes/rnb_Widgets/Imagepicker/pick_profile_picture.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final String uid;
+  const ProfileScreen({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final currentUser = FirebaseAuth.instance.currentUser!;
+  var userData = {};
+  int followers = 0;
+  int following = 0;
+  bool isFollowing = false;
   Uint8List? _image;
 
   //Profilbild bearbeiten
   void selectImage() async {
     _image = await pickProfilePicture();
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    try {
+      var userSnap = await FirebaseFirestore.instance.collection('Users').doc(widget.uid).get();
+      userData = userSnap.data()!;
+      followers = userSnap.data()!['followers'].length;
+      following = userSnap.data()!['following'].length;
+      isFollowing = userSnap.data()!['followers'].contains(FirebaseAuth.instance.currentUser!.uid);
+      setState(() {});
+    } catch (e) {
+      displayMessageToUser(e.toString(), context);
+    }
   }
 
   @override
@@ -40,177 +63,164 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.collection("Users").doc(currentUser.email).snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final userData = snapshot.data!.data() as Map<String, dynamic>;
-            return ListView(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: ListView(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      //Zahl der Abonnenten
+
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            followers.toString(),
+                            style: const TextStyle(fontFamily: 'Formula1bold'),
+                          ),
+                          const SizedBox(height: 2),
+                          const Text('Followers'),
+                        ],
+                      ),
+
+                      //Profilbild
+
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Stack(
                           children: [
-                            //Zahl der Abonnenten
-
-                            const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '99k',
-                                  style: TextStyle(fontFamily: 'Formula1bold'),
-                                ),
-                                SizedBox(height: 2),
-                                Text('Followers'),
-                              ],
-                            ),
-
-                            //Profilbild
-
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16),
-                              child: Stack(
-                                children: [
-                                  _image != null
-                                      ? CircleAvatar(
-                                          radius: 64,
-                                          backgroundImage: MemoryImage(_image!),
-                                        )
-                                      : userData.containsKey('profileImageUrl')
-                                          ? CircleAvatar(
-                                              radius: 64.0,
-                                              backgroundImage: CachedNetworkImageProvider(userData['profileImageUrl']),
-                                            )
-                                          : CircleAvatar(
-                                              radius: 64.0,
-                                              backgroundImage: CachedNetworkImageProvider(defaultProfileImageUrl),
-                                            ),
-                                  Positioned(
-                                    bottom: -10,
-                                    left: 80,
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      child: IconButton(
-                                        onPressed: () async {
-                                          Uint8List? pickedImage = await pickProfilePicture();
-                                          if (pickedImage != null) {
-                                            uploadProfileImage(pickedImage, currentUser.email!);
-                                            setState(() {
-                                              _image = pickedImage;
-                                            });
-                                          }
-                                        },
-                                        icon: const Icon(Icons.add_a_photo),
-                                        color: Colors.black,
+                            _image != null
+                                ? CircleAvatar(
+                                    radius: 64,
+                                    backgroundImage: MemoryImage(_image!),
+                                  )
+                                : userData.containsKey('profileImageUrl')
+                                    ? CircleAvatar(
+                                        radius: 64.0,
+                                        backgroundImage: CachedNetworkImageProvider(userData['profileImageUrl']),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 64.0,
+                                        backgroundImage: CachedNetworkImageProvider(defaultProfileImageUrl),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // Zahl der Nutzer denen man folgt
-
-                            const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '14',
-                                  style: TextStyle(fontFamily: 'Formula1bold'),
+                            Positioned(
+                              bottom: -10,
+                              left: 80,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: IconButton(
+                                  onPressed: () async {
+                                    Uint8List? pickedImage = await pickProfilePicture();
+                                    if (pickedImage != null) {
+                                      uploadProfileImage(pickedImage, userData['uid']);
+                                      setState(() {
+                                        _image = pickedImage;
+                                      });
+                                    }
+                                  },
+                                  icon: const Icon(Icons.add_a_photo),
+                                  color: Colors.black,
                                 ),
-                                SizedBox(height: 2),
-                                Text('Following'),
-                              ],
+                              ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                      ),
+                      // Zahl der Nutzer denen man folgt
 
-                        //Name in der App
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            following.toString(),
+                            style: const TextStyle(fontFamily: 'Formula1bold'),
+                          ),
+                          const SizedBox(height: 2),
+                          const Text('Following'),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
 
-                        Text(
-                          userData['name'],
-                          style: const TextStyle(fontFamily: 'Formula1bold'),
-                        ),
+                  //Name in der App
 
-                        //Username in der App
+                  Text(
+                    userData['name'],
+                    style: const TextStyle(fontFamily: 'Formula1bold'),
+                  ),
 
-                        Text(
-                          "@${userData['username']}",
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
+                  //Username in der App
 
-                        const SizedBox(height: 16),
+                  Text(
+                    "@${userData['username']}",
+                    style: TextStyle(color: Colors.grey[700]),
+                  ),
 
-                        //Bio im Profil
+                  const SizedBox(height: 16),
 
-                        Text(
-                          userData['bio'],
-                          textAlign: TextAlign.center,
-                        ),
+                  //Bio im Profil
 
-                        const SizedBox(height: 16),
+                  Text(
+                    userData['bio'],
+                    textAlign: TextAlign.center,
+                  ),
 
-                        //Button für Motorradwidget
+                  const SizedBox(height: 16),
 
-                        MyButton(
+                  //Button für Motorradwidget
+
+                  FirebaseAuth.instance.currentUser!.uid == widget.uid
+                      ? MyButton(
                           text: 'edit Profile',
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileScreen()));
                           },
-                        ),
+                        )
+                      : isFollowing
+                          ? MyButton(
+                              text: 'Unfollow',
+                              onTap: () {},
+                            )
+                          : MyButton(
+                              text: 'Follow',
+                              onTap: () {},
+                            ),
+                  const SizedBox(height: 16),
+                ],
+              ),
 
-                        const SizedBox(height: 16),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        MyButton(text: 'Test', onTap: () {}),
-                        MyButton(text: 'Test', onTap: () {})
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          'All',
-                          style: TextStyle(fontFamily: 'Formula1bold'),
-                        ),
-                        Text(
-                          'Photos',
-                          style: TextStyle(fontFamily: 'Formula1bold'),
-                        ),
-                        Text(
-                          'Videos',
-                          style: TextStyle(fontFamily: 'Formula1bold'),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    'All',
+                    style: TextStyle(fontFamily: 'Formula1bold'),
+                  ),
+                  Text(
+                    'Photos',
+                    style: TextStyle(fontFamily: 'Formula1bold'),
+                  ),
+                  Text(
+                    'Videos',
+                    style: TextStyle(fontFamily: 'Formula1bold'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
 
-                    // Bilder für Beiträge
+              // Bilder für Beiträge
 
-                    const MyPictures(),
-                    const MyPictures(),
-                  ],
-                ),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error${snapshot.error}'),
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+              const MyPictures(),
+              const MyPictures(),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -1,18 +1,18 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:provider/provider.dart';
+import 'package:rides_n_bikes/helper/helper_functions.dart';
 import 'package:rides_n_bikes/mainfeed.dart';
+import 'package:rides_n_bikes/providers/user_provider.dart';
+import 'package:rides_n_bikes/resources/firestore_methods.dart';
+import 'package:rides_n_bikes/rnb_models/user.dart';
 
 class UploadScreen extends StatefulWidget {
-  final currentUser = FirebaseAuth.instance.currentUser!;
-  final XFile? image;
-
+  XFile? image;
   UploadScreen({super.key, required this.image});
 
   @override
@@ -20,10 +20,49 @@ class UploadScreen extends StatefulWidget {
 }
 
 class _UploadScreenState extends State<UploadScreen> {
-  final currentUser = FirebaseAuth.instance.currentUser!;
   XFile? image;
   TextEditingController descriptionTextEditingController = TextEditingController();
   TextEditingController locationTextEditingController = TextEditingController();
+  bool _isLoading = false;
+
+  void postImage(
+    String uid,
+    String username,
+    String profileImageUrl,
+    XFile? image,
+  ) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      String res = await FirestoreMethods().uploadPost(
+        descriptionTextEditingController.text,
+        widget.image,
+        uid,
+        username,
+        locationTextEditingController.text,
+        profileImageUrl,
+      );
+
+      if (res == 'success') {
+        setState(() {
+          _isLoading = false;
+        });
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainFeedPage()), // Passen Sie dies an Ihre Seitenstruktur an
+        );
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        displayMessageToUser(res, context);
+      }
+    } catch (e) {
+      displayMessageToUser(e.toString(), context);
+    }
+  }
 
   removeImage() {
     setState(() {
@@ -84,56 +123,9 @@ class _UploadScreenState extends State<UploadScreen> {
     }
   }
 
-  Future<void> uploadPost() async {
-    try {
-      final String imageName = DateTime.now().millisecondsSinceEpoch.toString();
-      final firebase_storage.Reference storageReference = firebase_storage.FirebaseStorage.instance.ref().child("posts/$imageName.jpg");
-
-      final firebase_storage.UploadTask uploadTask = storageReference.putFile(File(widget.image!.path));
-
-      await uploadTask.whenComplete(() async {
-        final imageUrl = await storageReference.getDownloadURL();
-        print('Bild hochgeladen: $imageUrl');
-
-        final user = FirebaseAuth.instance.currentUser;
-        if (user != null) {
-          // Hier wird der Benutzername aus der Firestore-Sammlung abgerufen
-          final userData = await FirebaseFirestore.instance.collection('Users').doc(user.email).get();
-          final username = userData['username'];
-          final profileImageUrl = userData['profileImageUrl'];
-          final userPostsCollection = FirebaseFirestore.instance.collection('Users').doc(currentUser.email).collection('posts');
-
-          final postDocRef = await userPostsCollection.add({
-            'username': username,
-            'profileImageUrl': profileImageUrl,
-            'imageUrl': imageUrl,
-            'description': descriptionTextEditingController.text,
-            'location': locationTextEditingController.text,
-            'timestamp': FieldValue.serverTimestamp(),
-            'likes': [],
-          });
-
-          final postId = postDocRef.id;
-
-          print('Beitrag hochgeladen mit ID: ${postDocRef.id}');
-
-          await postDocRef.update({
-            'postId': postId
-          });
-
-          // Optional: Hier könntest du zur Hauptseite oder einer anderen Seite navigieren
-
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const MainFeedPage()));
-        }
-      });
-    } catch (error) {
-      print('Fehler beim Hochladen des Beitrags: $error');
-      // Hier könntest du eine Fehlermeldung anzeigen oder andere Maßnahmen ergreifen
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -149,82 +141,80 @@ class _UploadScreenState extends State<UploadScreen> {
         title: const Text('New Post'),
         actions: [
           TextButton(
-            onPressed: uploadPost,
+            onPressed: () => postImage(user.uid, user.username, user.profileImageUrl, widget.image),
             child: const Text('Share'),
           ),
         ],
       ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.collection("Users").doc(currentUser.email).snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data!.exists) {
-            final userData = snapshot.data!.data() as Map<String, dynamic>;
-            return ListView(
-              children: [
-                Container(
-                  height: 320,
-                  width: 320,
-                  child: widget.image != null && File(widget.image!.path).existsSync()
-                      ? Image.file(
-                          File(widget.image!.path),
-                          fit: BoxFit.cover,
-                        )
-                      : const Placeholder(),
+      body: Stack(
+        children: [
+          ListView(
+            children: [
+              SizedBox(
+                height: 320,
+                width: 320,
+                child: widget.image != null && File(widget.image!.path).existsSync()
+                    ? Image.file(
+                        File(widget.image!.path),
+                        fit: BoxFit.cover,
+                      )
+                    : const Placeholder(),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 12),
+              ),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(user.profileImageUrl),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 12),
-                ),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider(
-                      userData['profileImageUrl'],
-                    ),
-                  ),
-                  title: SizedBox(
-                    width: 250,
-                    child: TextField(
-                      controller: descriptionTextEditingController,
-                      decoration: const InputDecoration(hintText: 'Write description here...', border: InputBorder.none),
-                    ),
+                title: SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: descriptionTextEditingController,
+                    decoration: const InputDecoration(hintText: 'Write description here...', border: InputBorder.none),
                   ),
                 ),
-                const Divider(),
-                ListTile(
-                  leading: const Icon(
-                    Icons.person_pin_circle_outlined,
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(
+                  Icons.person_pin_circle_outlined,
+                  color: Colors.black,
+                ),
+                title: SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: locationTextEditingController,
+                    decoration: const InputDecoration(
+                      hintText: 'Location...',
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+              const Divider(),
+              Container(
+                width: 250,
+                alignment: Alignment.center,
+                child: TextButton.icon(
+                  onPressed: getUserCurrentLocation,
+                  icon: const Icon(
+                    Icons.location_on,
                     color: Colors.black,
                   ),
-                  title: SizedBox(
-                    width: 250,
-                    child: TextField(
-                      controller: locationTextEditingController,
-                      decoration: const InputDecoration(
-                        hintText: 'Location...',
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
+                  label: const Text('Get my current Location.'),
                 ),
-                const Divider(),
-                Container(
-                  width: 250,
-                  alignment: Alignment.center,
-                  child: TextButton.icon(
-                    onPressed: getUserCurrentLocation,
-                    icon: const Icon(
-                      Icons.location_on,
-                      color: Colors.black,
-                    ),
-                    label: const Text('Get my current Location.'),
-                  ),
-                ),
-              ],
-            );
-          } else {
-            // Handle the case when snapshot data is not available
-            return const CircularProgressIndicator();
-          }
-        },
+              ),
+            ],
+          ),
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+        ],
       ),
     );
   }

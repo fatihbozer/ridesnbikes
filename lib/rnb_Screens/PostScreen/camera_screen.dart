@@ -15,7 +15,6 @@ class _CameraScreenState extends State<CameraScreen> {
   late List<CameraDescription> cameras;
   late CameraController cameraController;
   int direction = 0;
-
   late Future<void> _cameraInitialization;
 
   @override

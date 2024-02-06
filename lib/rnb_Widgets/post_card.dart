@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:rides_n_bikes/providers/user_provider.dart';
+import 'package:rides_n_bikes/resources/firestore_methods.dart';
 import 'package:rides_n_bikes/rnb_Screens/CommentScreen/comment_screen.dart';
 import 'package:rides_n_bikes/rnb_Widgets/like_animation.dart';
+import 'package:rides_n_bikes/rnb_models/user.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
@@ -18,12 +21,9 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
-
   @override
   Widget build(BuildContext context) {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    bool isCurrentUserLiked = widget.snap['likes'].contains(currentUser?.uid);
-
+    final User user = Provider.of<UserProvider>(context).getUser;
     return Column(
       children: [
         //HEADER SECTION
@@ -80,19 +80,15 @@ class _PostCardState extends State<PostCard> {
         // IMAGE SECTION
 
         GestureDetector(
-          onDoubleTap: () {
+          onDoubleTap: () async {
+            await FirestoreMethods().likePost(
+              widget.snap['postId'],
+              user.uid,
+              widget.snap['likes'],
+            );
             setState(() {
               isLikeAnimating = true;
             });
-
-            // Überprüfe, ob der Benutzer den Beitrag bereits geliked hat
-            if (isCurrentUserLiked) {
-              // Entferne Like aus der Datenbank
-              removeLikeFromPost(widget.snap['postId']);
-            } else {
-              // Füge Like zur Datenbank hinzu
-              addLikeToPost(widget.snap['postId']);
-            }
           },
           child: Stack(
             alignment: Alignment.center,
@@ -101,7 +97,7 @@ class _PostCardState extends State<PostCard> {
                 height: MediaQuery.of(context).size.height * 0.4,
                 width: MediaQuery.of(context).size.height * 0.4,
                 child: Image.network(
-                  widget.snap['imageUrl'],
+                  widget.snap['postUrl'],
                   fit: BoxFit.cover,
                 ),
               ),
@@ -136,25 +132,31 @@ class _PostCardState extends State<PostCard> {
           child: Row(
             children: [
               LikeAnimation(
-                  isAnimating: isCurrentUserLiked,
-                  smallLike: true,
-                  child: IconButton(
-                    icon: const Icon(Icons.favorite),
-                    onPressed: () {
-                      if (isCurrentUserLiked) {
-                        // Entferne Like aus der Datenbank
-                        removeLikeFromPost(widget.snap['postId']);
-                      } else {
-                        // Füge Like zur Datenbank hinzu
-                        addLikeToPost(widget.snap['postId']);
-                      }
+                isAnimating: widget.snap['likes'].contains(user.uid),
+                smallLike: true,
+                child: IconButton(
+                    onPressed: () async {
+                      await FirestoreMethods().likePost(
+                        widget.snap['postId'],
+                        user.uid,
+                        widget.snap['likes'],
+                      );
+                      setState(() {
+                        isLikeAnimating = true;
+                      });
                     },
-                  )),
+                    icon: widget.snap['likes'].contains(user.uid)
+                        ? const Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
+                        : const Icon(Icons.favorite_border)),
+              ),
               IconButton(
                 icon: const Icon(Icons.comment),
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => CommentScreen(),
+                    builder: (context) => const CommentScreen(),
                   ),
                 ),
               ),
@@ -186,7 +188,7 @@ class _PostCardState extends State<PostCard> {
                 '${widget.snap['likes'].length} user liked this..',
                 style: const TextStyle(color: Colors.grey, fontSize: 12),
               ),
-              Padding(padding: EdgeInsets.only(top: 8)),
+              const Padding(padding: EdgeInsets.only(top: 8)),
               Row(
                 children: [
                   Text(
@@ -217,13 +219,13 @@ class _PostCardState extends State<PostCard> {
             children: [
               Text(
                 DateFormat.yMMMd().format(
-                  widget.snap['timestamp'].toDate(),
+                  widget.snap['datePublished'].toDate(),
                 ),
-                style: TextStyle(color: Colors.grey, fontSize: 12),
+                style: const TextStyle(color: Colors.grey, fontSize: 12),
               ),
-              Text(
-                '${widget.snap['likes'].length} likes..',
-                style: const TextStyle(color: Colors.grey),
+              const Text(
+                'view all comments',
+                style: TextStyle(color: Colors.grey),
               ),
             ],
           ),

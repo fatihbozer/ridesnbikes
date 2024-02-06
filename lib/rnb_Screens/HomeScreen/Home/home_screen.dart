@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Chats/chat_screen.dart';
 import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Home/my_drawer.dart';
@@ -35,7 +34,7 @@ class HomeScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('Users/${FirebaseAuth.instance.currentUser!.email}/posts').snapshots(),
+          stream: FirebaseFirestore.instance.collection('posts').snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

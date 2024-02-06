@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rides_n_bikes/helper/helper_functions.dart';
 import 'package:rides_n_bikes/providers/user_provider.dart';
 import 'package:rides_n_bikes/resources/firestore_methods.dart';
 import 'package:rides_n_bikes/rnb_Screens/CommentScreen/comment_screen.dart';
@@ -21,6 +23,25 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
+  int commentLen = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    getComments();
+  }
+
+  void getComments() async {
+    try {
+      QuerySnapshot snap = await FirebaseFirestore.instance.collection('posts').doc(widget.snap['postId']).collection('comments').get();
+
+      commentLen = snap.docs.length;
+    } catch (e) {
+      displayMessageToUser(e.toString(), context);
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
@@ -156,7 +177,9 @@ class _PostCardState extends State<PostCard> {
                 icon: const Icon(Icons.comment),
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const CommentScreen(),
+                    builder: (context) => CommentScreen(
+                      snap: widget.snap,
+                    ),
                   ),
                 ),
               ),
@@ -223,9 +246,18 @@ class _PostCardState extends State<PostCard> {
                 ),
                 style: const TextStyle(color: Colors.grey, fontSize: 12),
               ),
-              const Text(
-                'view all comments',
-                style: TextStyle(color: Colors.grey),
+              InkWell(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CommentScreen(
+                      snap: widget.snap,
+                    ),
+                  ),
+                ),
+                child: Text(
+                  'view all $commentLen comments',
+                  style: const TextStyle(color: Colors.grey),
+                ),
               ),
             ],
           ),

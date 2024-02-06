@@ -1,26 +1,54 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rides_n_bikes/providers/user_provider.dart';
+import 'package:rides_n_bikes/resources/firestore_methods.dart';
 import 'package:rides_n_bikes/rnb_Widgets/comment_card.dart';
+import 'package:rides_n_bikes/rnb_models/user.dart';
 
 class CommentScreen extends StatefulWidget {
-  const CommentScreen({super.key});
+  final snap;
+  const CommentScreen({super.key, required this.snap});
 
   @override
   State<CommentScreen> createState() => _CommentScreenState();
 }
 
 class _CommentScreenState extends State<CommentScreen> {
+  TextEditingController commentTextEditingController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    commentTextEditingController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text('Comments'),
         centerTitle: false,
       ),
-      body: CommentCard(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('posts').doc(widget.snap['postId']).collection('comments').orderBy('datePublished', descending: false).snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            itemCount: (snapshot.data! as dynamic).docs.length,
+            itemBuilder: (context, index) => CommentCard(
+              snap: (snapshot.data! as dynamic).docs[index].data(),
+            ),
+          );
+        },
+      ),
       bottomNavigationBar: SafeArea(
           child: Container(
         height: kToolbarHeight,
@@ -28,31 +56,35 @@ class _CommentScreenState extends State<CommentScreen> {
         padding: const EdgeInsets.only(left: 16, right: 8),
         child: Row(
           children: [
-            FutureBuilder(
-                future: getUserProfile(),
-                builder: (context, snapshot) {
-                  return CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider("${snapshot.data}"),
-                    radius: 18,
-                  );
-                }),
-            FutureBuilder(
-                future: getUsername(),
-                builder: (context, snapshot) {
-                  return Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 8),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Comment as ${snapshot.data}',
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                  );
-                }),
+            CircleAvatar(
+              backgroundImage: CachedNetworkImageProvider(user.profileImageUrl),
+              radius: 18,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16, right: 8),
+                child: TextField(
+                  controller: commentTextEditingController,
+                  decoration: InputDecoration(
+                    hintText: 'comment as ${user.username}...',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ),
             InkWell(
-              onTap: () async {},
+              onTap: () async {
+                await FirestoreMethods().postComment(
+                  widget.snap['postId'],
+                  commentTextEditingController.text,
+                  user.uid,
+                  user.username,
+                  user.profileImageUrl,
+                );
+                setState(() {
+                  commentTextEditingController.clear();
+                });
+              },
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 0,
@@ -69,20 +101,4 @@ class _CommentScreenState extends State<CommentScreen> {
       )),
     );
   }
-}
-
-Future<String> getUserProfile() async {
-  final user = FirebaseAuth.instance.currentUser;
-  final userData = await FirebaseFirestore.instance.collection('Users').doc(user!.email).get();
-  final profileImageUrl = userData['profileImageUrl'];
-
-  return profileImageUrl;
-}
-
-Future<String> getUsername() async {
-  final user = FirebaseAuth.instance.currentUser;
-  final userData = await FirebaseFirestore.instance.collection('Users').doc(user!.email).get();
-  final username = userData['username'];
-
-  return username;
 }

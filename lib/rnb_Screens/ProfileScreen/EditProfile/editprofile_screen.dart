@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rides_n_bikes/resources/auth_methods.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/my_button.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -20,45 +20,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     String newBio = bioController.text.trim();
     String newUsername = usernameController.text.trim();
 
-    // Überprüfe, ob die nicht leeren Textfelder die Mindestlänge erreichen
-    bool isNameValid = newName.isNotEmpty && newName.length >= 3;
-    bool isUsernameValid = newUsername.isNotEmpty && newUsername.length >= 3 && newUsername.length <= 20; // Hinzugefügt: Überprüfung für die maximale Länge
+    AuthMethods authMethods = AuthMethods();
 
-    if (isNameValid && isUsernameValid) {
-      // Aktualisiere nur die nicht leeren und gültigen Profilinformationen in der Datenbank
-      Map<String, dynamic> updateData = {};
-      if (newName.isNotEmpty) updateData['name'] = newName;
-      if (newBio.isNotEmpty) updateData['bio'] = newBio;
-      if (newUsername.isNotEmpty) updateData['username'] = newUsername;
+    String updateResult = await authMethods.updateUserProfile(
+      newName: newName,
+      newUsername: newUsername,
+      newBio: newBio,
+    );
 
-      await FirebaseFirestore.instance.collection("Users").doc(currentUser.email).update(updateData);
-
-      // Beiträge des Benutzers abrufen
-      final userPostsCollection = FirebaseFirestore.instance.collection('Users').doc(currentUser.email).collection('posts');
-      final userPosts = await userPostsCollection.get();
-
-      // Benutzernamen in jedem Beitrag aktualisieren
-      for (final postDoc in userPosts.docs) {
-        final postId = postDoc.id;
-        await userPostsCollection.doc(postId).update({
-          'username': newUsername,
-        });
-      }
-
-      // Optional: Zurück zum vorherigen Screen
+    if (updateResult == 'success') {
+      // Optional: Navigate back or show a success message
       Navigator.pop(context);
     } else {
-      // Zeige eine Meldung an, wenn die Mindestlänge für Name und Username nicht erreicht ist
+      // Handle the error, show a message, etc.
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Please enter valid values for Name, Bio, and Username.'),
-              Text('Minimum length for Name and Username is 3 characters.'),
-              Text('Username must be 20 characters or less.'), // Hinzugefügt: Meldung für die maximale Länge
-            ],
-          ),
+        SnackBar(
+          content: Text(updateResult),
         ),
       );
     }

@@ -8,7 +8,6 @@ import 'package:rides_n_bikes/resources/firestore_methods.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/EditProfile/editprofile_screen.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/default_profile_image.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/follow_button.dart';
-import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/upload_profileimage.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Imagepicker/pick_profile_picture.dart';
 import 'package:rides_n_bikes/theme/theme.dart';
 
@@ -128,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           onPressed: () async {
                                             Uint8List? pickedImage = await pickProfilePicture();
                                             if (pickedImage != null) {
-                                              uploadProfileImage(pickedImage, userData['uid']);
+                                              FirestoreMethods().uploadProfileImage(pickedImage, userData['uid']);
                                               setState(() {
                                                 _image = pickedImage;
                                               });
@@ -189,7 +188,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ? FollowButton(
                                   backgroundColor: rideMode.colorScheme.primary,
                                   text: 'Edit Profile',
-                                  function: () {},
+                                  function: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditProfileScreen(),
+                                      ),
+                                    );
+                                  },
                                 )
                               : isFollowing
                                   ? FollowButton(

@@ -153,4 +153,56 @@ class AuthMethods {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+  Future<String> updateUserProfile({
+    required String newName,
+    required String newUsername,
+    required String newBio,
+  }) async {
+    String res = 'Some error occurred';
+    print(res);
+
+    try {
+      User currentUser = _auth.currentUser!;
+      DocumentReference userDocRef = _firestore.collection('Users').doc(currentUser.uid);
+
+      // Check if the new username is already taken
+      bool isUsernameTaken = await isUsernameExists(newUsername);
+      if (isUsernameTaken) {
+        return 'Username is already taken. Please choose a different username.';
+      }
+
+      // Update user data in the database
+      await userDocRef.update({
+        'name': newName,
+        'username': newUsername,
+        'bio': newBio,
+      });
+
+      // Update username in user's posts
+      QuerySnapshot userPosts = await _firestore.collection('posts').where('uid', isEqualTo: currentUser.uid).get();
+      for (QueryDocumentSnapshot postDoc in userPosts.docs) {
+        String postId = postDoc.id;
+        await _firestore.collection('posts').doc(postId).update({
+          'username': newUsername,
+        });
+
+        // Update username in comments for each post
+        QuerySnapshot postComments = await _firestore.collection('posts').doc(postId).collection('comments').where('uid', isEqualTo: currentUser.uid).get();
+        for (QueryDocumentSnapshot commentDoc in postComments.docs) {
+          String commentId = commentDoc.id;
+          await _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).update({
+            'username': newUsername,
+          });
+        }
+      }
+
+      res = 'success'; // User profile updated successfully
+      print(res);
+    } catch (e) {
+      res = e.toString();
+    }
+
+    return res;
+  }
 }

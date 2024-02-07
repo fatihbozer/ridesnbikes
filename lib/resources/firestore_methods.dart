@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -139,6 +140,39 @@ class FirestoreMethods {
       print(
         e.toString(),
       );
+    }
+  }
+
+  Future<void> uploadProfileImage(Uint8List imageBytes, String uid) async {
+    try {
+      print('Start uploading profile image...');
+      String fileName = 'profile_images/$uid.jpg';
+
+      await _storage.ref(fileName).putData(imageBytes);
+
+      // Nach dem Upload kannst du den Download-URL abrufen, um es im Profil anzuzeigen oder es in der Firestore-Datenbank zu speichern.
+      String downloadURL = await _storage.ref(fileName).getDownloadURL();
+
+      // Speichere den Download-URL in der Firestore-Datenbank oder aktualisiere das vorhandene Benutzerdokument.
+      await FirebaseFirestore.instance.collection("Users").doc(uid).update({
+        'profileImageUrl': downloadURL,
+      });
+
+      // Beiträge des Benutzers abrufen
+      final userPostsCollection = FirebaseFirestore.instance.collection('posts').where('uid', isEqualTo: uid);
+      final userPosts = await userPostsCollection.get();
+
+      // Profilbild-URL in jedem Beitrag aktualisieren
+      for (final postDoc in userPosts.docs) {
+        final postId = postDoc.id;
+        await FirebaseFirestore.instance.collection('posts').doc(postId).update({
+          'profileImageUrl': downloadURL,
+        });
+      }
+
+      print('Profile image uploaded successfully!');
+    } catch (error) {
+      print('Error uploading profile image: $error');
     }
   }
 }

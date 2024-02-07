@@ -9,6 +9,7 @@ import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/EditProfile/editprofile_
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/default_profile_image.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/follow_button.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Imagepicker/pick_profile_picture.dart';
+import 'package:rides_n_bikes/rnb_Widgets/post_card.dart';
 import 'package:rides_n_bikes/theme/theme.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   var userData = {};
-
+  bool isGridMode = true;
   int followers = 0;
   int following = 0;
   bool isFollowing = false;
@@ -231,25 +232,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
 
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            'All',
-                            style: TextStyle(fontFamily: 'Formula1bold'),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isGridMode = true;
+                              });
+                            },
+                            icon: Icon(Icons.grid_on),
                           ),
-                          Text(
-                            'Photos',
-                            style: TextStyle(fontFamily: 'Formula1bold'),
+                          Container(
+                            height: 24, // Die gewünschte Höhe des Trennstrichs
+                            width: 1, // Die gewünschte Breite des Trennstrichs
+                            color: Colors.grey,
                           ),
-                          Text(
-                            'Videos',
-                            style: TextStyle(fontFamily: 'Formula1bold'),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isGridMode = false;
+                              });
+                            },
+                            icon: Icon(Icons.format_list_bulleted),
                           ),
                         ],
                       ),
                       const SizedBox(height: 16),
-
                       // Beiträge
 
                       FutureBuilder(
@@ -260,23 +269,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: CircularProgressIndicator(),
                             );
                           }
-                          return GridView.builder(
-                            shrinkWrap: true,
-                            itemCount: (snapshot.data! as dynamic).docs.length,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 8,
-                              mainAxisSpacing: 8,
-                              childAspectRatio: 1,
-                            ),
-                            itemBuilder: ((context, index) {
-                              DocumentSnapshot snap = (snapshot.data! as dynamic).docs[index];
-                              return Image(
-                                image: CachedNetworkImageProvider(snap['postUrl']),
-                                fit: BoxFit.cover,
-                              );
-                            }),
-                          );
+                          return isGridMode
+                              ? GridView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: (snapshot.data! as dynamic).docs.length,
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 8,
+                                    mainAxisSpacing: 8,
+                                  ),
+                                  itemBuilder: ((context, index) {
+                                    DocumentSnapshot snap = (snapshot.data! as dynamic).docs[index];
+                                    return Image(
+                                      image: CachedNetworkImageProvider(snap['postUrl']),
+                                      fit: BoxFit.cover,
+                                    );
+                                  }),
+                                )
+                              : ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: (snapshot.data! as dynamic).docs.length,
+                                  itemBuilder: (context, index) {
+                                    DocumentSnapshot snap = (snapshot.data! as dynamic).docs[index];
+                                    return PostCard(
+                                      snap: snap.data(),
+                                    );
+                                  },
+                                );
                         }),
                       ),
                     ],

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/default_profile_image.dart';
-import 'package:rides_n_bikes/rnb_Widgets/my_pictures.dart';
+import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/profile_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -105,10 +105,7 @@ class CustomSearchDelegate extends SearchDelegate {
               var profileImageUrl = userData['profileImageUrl'] ?? defaultProfileImageUrl;
 
               return GestureDetector(
-                onTap: () {
-                  // Hier kannst du die Aktion implementieren, wenn auf ein Suchergebnis getippt wird
-                  print('Tapped on $result');
-                },
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfileScreen(uid: userData['uid']))),
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundImage: CachedNetworkImageProvider(profileImageUrl),

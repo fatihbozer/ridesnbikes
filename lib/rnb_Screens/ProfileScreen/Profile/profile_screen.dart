@@ -4,10 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
+import 'package:rides_n_bikes/resources/firestore_methods.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/EditProfile/editprofile_screen.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/default_profile_image.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/follow_button.dart';
-import 'package:rides_n_bikes/rnb_Widgets/my_pictures.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/upload_profileimage.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Imagepicker/pick_profile_picture.dart';
 import 'package:rides_n_bikes/theme/theme.dart';
@@ -195,12 +195,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ? FollowButton(
                                       backgroundColor: Colors.grey,
                                       text: 'Unfollow',
-                                      function: () {},
+                                      function: () async {
+                                        await FirestoreMethods().followUser(
+                                          FirebaseAuth.instance.currentUser!.uid,
+                                          userData['uid'],
+                                        );
+                                        setState(() {
+                                          isFollowing = false;
+                                          followers--;
+                                        });
+                                      },
                                     )
                                   : FollowButton(
                                       backgroundColor: rideMode.colorScheme.secondary,
                                       text: 'Follow',
-                                      function: () {},
+                                      function: () async {
+                                        await FirestoreMethods().followUser(
+                                          FirebaseAuth.instance.currentUser!.uid,
+                                          userData['uid'],
+                                        );
+                                        setState(() {
+                                          isFollowing = true;
+                                          followers++;
+                                        });
+                                      },
                                     ),
 
                           const SizedBox(height: 16),

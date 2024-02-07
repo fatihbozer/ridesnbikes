@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FollowButton extends StatelessWidget {
-  final Function()? function;
+  final VoidCallback? function;
   final Color backgroundColor;
   final String text;
 
@@ -9,18 +9,21 @@ class FollowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      alignment: Alignment.center,
-      width: MediaQuery.of(context).size.width,
-      height: 40,
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white,
+    return GestureDetector(
+      onTap: function,
+      child: Container(
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        alignment: Alignment.center,
+        width: MediaQuery.of(context).size.width,
+        height: 40,
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
         ),
       ),
     );

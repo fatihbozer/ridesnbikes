@@ -17,6 +17,8 @@ class FirestoreMethods {
     String username,
     String location,
     String profileImageUrl,
+    String selectedBrand,
+    String selectedModel,
   ) async {
     print('Image before upload: $image');
     String res = 'some error occurred';
@@ -38,6 +40,8 @@ class FirestoreMethods {
         postUrl: photoUrl,
         profileImageUrl: profileImageUrl,
         likes: [],
+        selectedBrand: selectedBrand,
+        selectedModel: selectedModel,
       );
 
       _firestore.collection('posts').doc(postId).set(

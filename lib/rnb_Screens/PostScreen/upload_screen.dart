@@ -42,6 +42,8 @@ class _UploadScreenState extends State<UploadScreen> {
         username,
         locationTextEditingController.text,
         profileImageUrl,
+        selectedBrand ?? '',
+        selectedModel ?? '',
       );
 
       if (res == 'success') {
@@ -51,7 +53,7 @@ class _UploadScreenState extends State<UploadScreen> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MainFeedPage()), // Passen Sie dies an Ihre Seitenstruktur an
+          MaterialPageRoute(builder: (context) => const MainFeedPage()), // Passen Sie dies an Ihre Seitenstruktur an
         );
       } else {
         setState(() {
@@ -123,6 +125,118 @@ class _UploadScreenState extends State<UploadScreen> {
     }
   }
 
+  String? selectedBrand;
+  String? selectedModel;
+
+  final List<String> brands = [
+    'Harley-Davidson',
+    'Ducati',
+    'Yamaha',
+    'Honda',
+    'BMW Motorrad',
+    'KTM',
+    'Triumph',
+    'Kawasaki',
+    'Suzuki',
+    'Aprilia',
+    'Moto Guzzi',
+    'Indian Motorcycle',
+    'Husqvarna',
+    'Royal Enfield',
+    'Zero Motorcycles',
+  ]; // Beispielmarken
+  final Map<String, List<String>> modelsPerBrand = {
+    'Harley-Davidson': [
+      'Cruiser',
+      'Touring',
+      'Sportster'
+    ],
+    'Ducati': [
+      'Sportbike',
+      'Naked Bike',
+      'Adventure Touring',
+      'Cruiser'
+    ],
+    'Yamaha': [
+      'Sportbike',
+      'Naked Bike',
+      'Adventure Touring',
+      'Cruiser'
+    ],
+    'Honda': [
+      'Sportbike',
+      'Adventure Touring',
+      'Cruiser',
+      'Standard'
+    ],
+    'BMW Motorrad': [
+      'Sportbike',
+      'Adventure Touring',
+      'Naked Bike',
+      'Touring'
+    ],
+    'KTM': [
+      'Sportbike',
+      'Adventure Touring',
+      'Naked Bike',
+      'Dual-Sport'
+    ],
+    'Triumph': [
+      'Cruiser',
+      'Street Twin',
+      'Adventure Touring',
+      'Sportbike'
+    ],
+    'Kawasaki': [
+      'Sportbike',
+      'Naked Bike',
+      'Adventure Touring',
+      'Cruiser'
+    ],
+    'Suzuki': [
+      'Sportbike',
+      'Adventure Touring',
+      'Naked Bike',
+      'Cruiser'
+    ],
+    'Aprilia': [
+      'Sportbike',
+      'Naked Bike',
+      'Adventure Touring',
+      'Cruiser'
+    ],
+    'Moto Guzzi': [
+      'Cruiser',
+      'Adventure Touring',
+      'Naked Bike',
+      'Touring'
+    ],
+    'Indian Motorcycle': [
+      'Cruiser',
+      'Touring',
+      'Sportbike',
+      'Standard'
+    ],
+    'Husqvarna': [
+      'Naked Bike',
+      'Dual-Sport',
+      'Adventure Touring',
+      'Supermoto'
+    ],
+    'Royal Enfield': [
+      'Classic',
+      'Adventure Touring',
+      'Cruiser',
+      'Standard'
+    ],
+    'Zero Motorcycles': [
+      'Electric Sportbike',
+      'Electric Dual Sport',
+      'Electric Supermoto'
+    ],
+  };
+  // Beispielmodelle pro Marke
+
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
@@ -150,6 +264,8 @@ class _UploadScreenState extends State<UploadScreen> {
         children: [
           ListView(
             children: [
+              // IMAGE
+
               SizedBox(
                 height: 320,
                 width: 320,
@@ -163,6 +279,9 @@ class _UploadScreenState extends State<UploadScreen> {
               const Padding(
                 padding: EdgeInsets.only(top: 12),
               ),
+
+              //DESCRIPTION
+
               ListTile(
                 leading: CircleAvatar(
                   backgroundImage: CachedNetworkImageProvider(user.profileImageUrl),
@@ -175,7 +294,58 @@ class _UploadScreenState extends State<UploadScreen> {
                   ),
                 ),
               ),
-              const Divider(),
+              const Divider(indent: 20, endIndent: 20, color: Colors.grey),
+
+              // SELECT BIKE
+
+              ListTile(
+                leading: const Icon(Icons.motorcycle), // Fügen Sie das gewünschte Motorrad-Icon hinzu
+                title: DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(
+                    hintText: 'Select Brand...',
+                    border: InputBorder.none,
+                  ),
+                  value: selectedBrand,
+                  items: brands.map((String brand) {
+                    return DropdownMenuItem<String>(
+                      value: brand,
+                      child: Text(brand),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedBrand = value;
+                      selectedModel = null; // Reset model when brand changes
+                    });
+                  },
+                ),
+              ),
+              if (selectedBrand != null)
+                ListTile(
+                  leading: const Icon(Icons.motorcycle), // Fügen Sie das gewünschte Motorrad-Icon hinzu
+                  title: DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      hintText: 'Select Model...',
+                      border: InputBorder.none,
+                    ),
+                    value: selectedModel,
+                    items: modelsPerBrand[selectedBrand!]!.map((String model) {
+                      return DropdownMenuItem<String>(
+                        value: model,
+                        child: Text(model),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedModel = value;
+                      });
+                    },
+                  ),
+                ),
+              const Divider(indent: 20, endIndent: 20, color: Colors.grey),
+
+              //LOCATION
+
               ListTile(
                 leading: const Icon(
                   Icons.person_pin_circle_outlined,
@@ -192,7 +362,7 @@ class _UploadScreenState extends State<UploadScreen> {
                   ),
                 ),
               ),
-              const Divider(),
+              const Divider(indent: 20, endIndent: 20, color: Colors.grey),
               Container(
                 width: 250,
                 alignment: Alignment.center,

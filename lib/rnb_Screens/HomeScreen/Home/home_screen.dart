@@ -11,43 +11,44 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const MyDrawer(),
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
-          title: const Text(
-            'Home',
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          actions: [
-            Container(
-              margin: const EdgeInsets.only(right: 16),
-              child: IconButton(
-                icon: const Icon(Icons.chat_bubble_outline, color: Colors.black),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ChatScreen()));
-                },
-              ),
-            ),
-          ],
+      drawer: const MyDrawer(),
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
+          'Home',
+          style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
-        body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('posts').orderBy('datePublished', descending: true).snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) => PostCard(
-                snap: snapshot.data!.docs[index].data(),
-              ),
+        elevation: 0,
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            child: IconButton(
+              icon: const Icon(Icons.chat_bubble_outline, color: Colors.black),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ChatScreen()));
+              },
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: Colors.white,
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('posts').orderBy('datePublished', descending: true).snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          },
-        ));
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) => PostCard(
+              snap: snapshot.data!.docs[index].data(),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

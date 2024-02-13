@@ -94,7 +94,8 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               IconButton(
-                  onPressed: () {
+                onPressed: () {
+                  if (widget.snap['uid'] == user.uid) {
                     showDialog(
                       context: context,
                       builder: (context) => Dialog(
@@ -122,8 +123,10 @@ class _PostCardState extends State<PostCard> {
                         ),
                       ),
                     );
-                  },
-                  icon: const Icon(Icons.more_vert))
+                  }
+                },
+                icon: const Icon(Icons.more_vert),
+              )
             ],
           ),
         ),

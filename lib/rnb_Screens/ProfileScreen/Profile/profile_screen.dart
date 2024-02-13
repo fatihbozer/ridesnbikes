@@ -122,26 +122,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Positioned(
                                       bottom: -10,
                                       left: 80,
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        child: IconButton(
-                                          onPressed: () async {
-                                            Uint8List? pickedImage = await pickProfilePicture();
-                                            if (pickedImage != null) {
-                                              FirestoreMethods().uploadProfileImage(pickedImage, userData['uid']);
-                                              setState(() {
-                                                _image = pickedImage;
-                                              });
-                                            }
-                                          },
-                                          icon: const Icon(Icons.add_a_photo),
-                                          color: Colors.black,
-                                        ),
-                                      ),
+                                      child: FirebaseAuth.instance.currentUser!.uid == widget.uid
+                                          ? CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              child: IconButton(
+                                                onPressed: () async {
+                                                  Uint8List? pickedImage = await pickProfilePicture();
+                                                  if (pickedImage != null) {
+                                                    FirestoreMethods().uploadProfileImage(pickedImage, userData['uid']);
+                                                    setState(() {
+                                                      _image = pickedImage;
+                                                    });
+                                                  }
+                                                },
+                                                icon: const Icon(Icons.add_a_photo),
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                          : SizedBox.shrink(), // Wenn es nicht das eigene Profil ist, wird ein leeres Widget zurückgegeben (unsichtbarer Button).
                                     ),
                                   ],
                                 ),
                               ),
+
                               // Zahl der Nutzer denen man folgt
 
                               Column(
@@ -190,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   backgroundColor: rideMode.colorScheme.primary,
                                   text: 'Edit Profile',
                                   function: () {
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => EditProfileScreen(),

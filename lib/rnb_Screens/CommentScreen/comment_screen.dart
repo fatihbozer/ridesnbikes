@@ -3,9 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rides_n_bikes/providers/user_provider.dart';
-import 'package:rides_n_bikes/resources/firestore_methods.dart';
+import 'package:rides_n_bikes/methods/firestore_methods.dart';
 import 'package:rides_n_bikes/rnb_Widgets/comment_card.dart';
-import 'package:rides_n_bikes/rnb_models/user.dart';
+import 'package:rides_n_bikes/rnb_Models/user.dart';
 
 class CommentScreen extends StatefulWidget {
   final snap;

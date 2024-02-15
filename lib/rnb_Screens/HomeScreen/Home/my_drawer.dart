@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/resources/auth_methods.dart';
-import 'package:rides_n_bikes/rnb_Screens/auth/Login_or_Register/Login/login_screen.dart';
+import 'package:rides_n_bikes/methods/auth_methods.dart';
+import 'package:rides_n_bikes/rnb_Screens/Auth/Login/login_screen.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});

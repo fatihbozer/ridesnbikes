@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rides_n_bikes/resources/auth_methods.dart';
+import 'package:rides_n_bikes/methods/auth_methods.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/my_button.dart';
 
 class EditProfileScreen extends StatefulWidget {

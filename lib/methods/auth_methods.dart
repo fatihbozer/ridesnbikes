@@ -1,19 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rides_n_bikes/rnb_Screens/ProfileScreen/Profile/ProfilePic/default_profile_image.dart';
-import 'package:rides_n_bikes/rnb_models/user.dart' as model;
+import 'package:rides_n_bikes/rnb_Models/user.dart' as model;
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // Funktion zum Abrufen der Benutzerdetails aus der Datenbank
+
   Future<model.User> getUserDetails() async {
     User currentUser = _auth.currentUser!;
-
     DocumentSnapshot snap = await _firestore.collection('Users').doc(currentUser.uid).get();
-
     return model.User.fromSnap(snap);
   }
+
+  // Funktion zur Benutzerregistrierung
 
   Future<String> signUpUser({
     required String email,
@@ -25,19 +27,19 @@ class AuthMethods {
     print(res);
     try {
       if (email.isNotEmpty && password.isNotEmpty && username.isNotEmpty && password == confirmPw) {
-        // CHECK IF USERNAME IS ALREADY TAKEN
+        // Überprüfen, ob der Benutzername bereits vergeben ist
         bool isUsernameTaken = await isUsernameExists(username);
         if (isUsernameTaken) {
           return 'Username is already taken. Please choose a different username.';
         }
 
-        // REGISTER USER
+        // Benutzer registrieren
         UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
-        // ADD USER TO DATABASE
+        // Benutzer zur Datenbank hinzufügen
         await createUserDocument(userCredential, email, username);
 
-        res = 'success'; // User signed up successfully
+        res = 'success'; // Erfolgreiche Registrierung
         print(res);
       } else {
         if (password != confirmPw) {
@@ -73,14 +75,14 @@ class AuthMethods {
     return res;
   }
 
-  // CHECK IF USERNAME EXISTS IN THE DATABASE
+  // Funktion zum Überprüfen, ob der Benutzername bereits in der Datenbank vorhanden ist
 
   Future<bool> isUsernameExists(String username) async {
     QuerySnapshot querySnapshot = await _firestore.collection('Users').where('username', isEqualTo: username).get();
     return querySnapshot.docs.isNotEmpty;
   }
 
-  // CREATE USER DOCUMENT
+  // Funktion zum Erstellen des Benutzerdokuments in der Datenbank
 
   Future<void> createUserDocument(UserCredential userCredential, String email, String username) async {
     try {
@@ -103,7 +105,7 @@ class AuthMethods {
     }
   }
 
-  // LOGIN USER FUNCTION
+  // Funktion zum Einloggen des Benutzers
 
   Future<String> loginUser({
     required String email,
@@ -150,9 +152,13 @@ class AuthMethods {
     return res;
   }
 
+  // Funktion zum Abmelden des Benutzers
+
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+  // Funktion zum Aktualisieren des Benutzerprofils
 
   Future<String> updateUserProfile({
     required String newName,
@@ -166,20 +172,20 @@ class AuthMethods {
       User currentUser = _auth.currentUser!;
       DocumentReference userDocRef = _firestore.collection('Users').doc(currentUser.uid);
 
-      // Check if the new username is already taken
+      // Überprüfen, ob der neue Benutzername bereits vergeben ist
       bool isUsernameTaken = await isUsernameExists(newUsername);
       if (isUsernameTaken) {
         return 'Username is already taken. Please choose a different username.';
       }
 
-      // Update user data in the database
+      // Benutzerdaten in der Datenbank aktualisieren
       await userDocRef.update({
         'name': newName,
         'username': newUsername,
         'bio': newBio,
       });
 
-      // Update username in user's posts
+      // Benutzername in den Beiträgen des Benutzers aktualisieren
       QuerySnapshot userPosts = await _firestore.collection('posts').where('uid', isEqualTo: currentUser.uid).get();
       for (QueryDocumentSnapshot postDoc in userPosts.docs) {
         String postId = postDoc.id;
@@ -187,7 +193,7 @@ class AuthMethods {
           'username': newUsername,
         });
 
-        // Update username in comments for each post
+        // Benutzername in den Kommentaren zu jedem Beitrag aktualisieren
         QuerySnapshot postComments = await _firestore.collection('posts').doc(postId).collection('comments').where('uid', isEqualTo: currentUser.uid).get();
         for (QueryDocumentSnapshot commentDoc in postComments.docs) {
           String commentId = commentDoc.id;
@@ -197,7 +203,7 @@ class AuthMethods {
         }
       }
 
-      res = 'success'; // User profile updated successfully
+      res = 'success'; // Benutzerprofil erfolgreich aktualisiert
       print(res);
     } catch (e) {
       res = e.toString();

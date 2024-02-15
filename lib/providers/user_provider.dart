@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rides_n_bikes/resources/auth_methods.dart';
-import 'package:rides_n_bikes/rnb_models/user.dart';
+import 'package:rides_n_bikes/methods/auth_methods.dart';
+import 'package:rides_n_bikes/rnb_Models/user.dart';
 
 /*
 class UserProvider with ChangeNotifier {

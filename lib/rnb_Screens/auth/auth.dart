@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rides_n_bikes/mainfeed.dart';
-import 'package:rides_n_bikes/rnb_Screens/auth/Login_or_Register/Login/login_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Home/mainfeed.dart';
+import 'package:rides_n_bikes/rnb_Screens/Auth/Login/login_screen.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});

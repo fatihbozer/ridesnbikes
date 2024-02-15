@@ -31,6 +31,7 @@ class _MotorcycleScreenState extends State<MotorcycleScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Motorrad Marke auswählen
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(
                 hintText: 'Select Brand...',
@@ -46,11 +47,12 @@ class _MotorcycleScreenState extends State<MotorcycleScreen> {
               onChanged: (String? value) {
                 setState(() {
                   selectedBrand = value;
-                  selectedModel = null; // Reset model when brand changes
+                  selectedModel = null; // Modell zurücksetzen wenn sich Marke ändert
                 });
               },
             ),
             const SizedBox(height: 20),
+            // Modell der Marke auswählen
             if (selectedBrand != null)
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
@@ -71,6 +73,7 @@ class _MotorcycleScreenState extends State<MotorcycleScreen> {
                 },
               ),
             const SizedBox(height: 20),
+            // Button um ausgewähltes Marke und Modell anzuzeigen.(noch ohne richtige Funktion)
             MyButton(
               text: 'Show Result',
               onTap: () {
@@ -80,6 +83,8 @@ class _MotorcycleScreenState extends State<MotorcycleScreen> {
               },
             ),
             const SizedBox(height: 20),
+
+            // Beiträge nach ausgewählter Marke und Modell anzeigen
             if (showPosts)
               Expanded(
                 child: StreamBuilder(

@@ -6,11 +6,11 @@ import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
-import 'package:rides_n_bikes/mainfeed.dart';
+import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Home/mainfeed.dart';
 import 'package:rides_n_bikes/providers/user_provider.dart';
-import 'package:rides_n_bikes/resources/firestore_methods.dart';
+import 'package:rides_n_bikes/methods/firestore_methods.dart';
 import 'package:rides_n_bikes/rnb_Widgets/brands_models.dart';
-import 'package:rides_n_bikes/rnb_models/user.dart';
+import 'package:rides_n_bikes/rnb_Models/user.dart';
 
 class UploadScreen extends StatefulWidget {
   XFile? image;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
-import 'package:rides_n_bikes/mainfeed.dart';
-import 'package:rides_n_bikes/resources/auth_methods.dart';
-import 'package:rides_n_bikes/rnb_Screens/auth/Register/register_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Home/mainfeed.dart';
+import 'package:rides_n_bikes/methods/auth_methods.dart';
+import 'package:rides_n_bikes/rnb_Screens/Auth/Register/register_screen.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/rl_button.dart';
 import 'package:rides_n_bikes/rnb_Widgets/TextField/rides_textfield.dart';
 

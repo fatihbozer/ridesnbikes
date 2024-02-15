@@ -5,10 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
 import 'package:rides_n_bikes/providers/user_provider.dart';
-import 'package:rides_n_bikes/resources/firestore_methods.dart';
+import 'package:rides_n_bikes/methods/firestore_methods.dart';
 import 'package:rides_n_bikes/rnb_Screens/CommentScreen/comment_screen.dart';
 import 'package:rides_n_bikes/rnb_Widgets/like_animation.dart';
-import 'package:rides_n_bikes/rnb_models/user.dart';
+import 'package:rides_n_bikes/rnb_Models/user.dart';
 
 class PostCard extends StatefulWidget {
   final snap;

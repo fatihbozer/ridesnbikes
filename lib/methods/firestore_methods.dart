@@ -3,12 +3,14 @@ import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:rides_n_bikes/rnb_models/post.dart';
+import 'package:rides_n_bikes/rnb_Models/post.dart';
 import 'package:uuid/uuid.dart';
 
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  // Funktion zum Hochladen eines Beitrags in die Firestore-Datenbank und den Speicher
 
   Future<String> uploadPost(
     String description,
@@ -25,11 +27,13 @@ class FirestoreMethods {
     try {
       String fileName = 'posts/$uid.jpg';
 
+      // Bild in Firebase-Storage hochladen
       await _storage.ref(fileName).putFile(File(image!.path));
       String photoUrl = await _storage.ref(fileName).getDownloadURL();
 
       String postId = Uuid().v1();
 
+      // Beitrag erstellen und in die Datenbank hochladen
       Post post = Post(
         description: description,
         uid: uid,
@@ -56,6 +60,8 @@ class FirestoreMethods {
     return res;
   }
 
+  // Funktion zum Liken oder Entliken eines Beitrags
+
   Future<void> likePost(String postId, String uid, List likes) async {
     try {
       if (likes.contains(uid)) {
@@ -77,6 +83,8 @@ class FirestoreMethods {
       );
     }
   }
+
+  // Funktion zum Hinzufügen eines Kommentars zu einem Beitrag
 
   Future<void> postComment(String postId, String text, String uid, String username, String profileImageUrl) async {
     try {
@@ -100,6 +108,8 @@ class FirestoreMethods {
     }
   }
 
+  // Funktion zum Löschen eines Beitrags
+
   Future<void> deletePost(String postId) async {
     try {
       await _firestore.collection('posts').doc(postId).delete();
@@ -110,12 +120,15 @@ class FirestoreMethods {
     }
   }
 
+  // Funktion zum Folgen oder Entfolgen eines Benutzers
+
   Future<void> followUser(String uid, String followId) async {
     try {
       DocumentSnapshot snap = await _firestore.collection('Users').doc(uid).get();
       List following = (snap.data()! as dynamic)['following'];
 
       if (following.contains(followId)) {
+        // Entfolgen
         await _firestore.collection('Users').doc(followId).update({
           'followers': FieldValue.arrayRemove([
             uid
@@ -128,6 +141,7 @@ class FirestoreMethods {
           ])
         });
       } else {
+        // Folgen
         await _firestore.collection('Users').doc(followId).update({
           'followers': FieldValue.arrayUnion([
             uid
@@ -147,11 +161,14 @@ class FirestoreMethods {
     }
   }
 
+  // Funktion zum Hochladen eines Profilbilds in den Speicher und Aktualisieren des Download-URLs in der Datenbank
+
   Future<void> uploadProfileImage(Uint8List imageBytes, String uid) async {
     try {
       print('Start uploading profile image...');
       String fileName = 'profile_images/$uid.jpg';
 
+      // Bild in den Speicher hochladen
       await _storage.ref(fileName).putData(imageBytes);
 
       // Nach dem Upload kannst du den Download-URL abrufen, um es im Profil anzuzeigen oder es in der Firestore-Datenbank zu speichern.

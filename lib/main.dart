@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/providers/user_provider.dart';
-import 'package:rides_n_bikes/rnb_Screens/auth/auth.dart';
+import 'package:rides_n_bikes/rnb_Screens/Auth/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rides_n_bikes/theme/theme.dart';
 import 'firebase_options.dart';

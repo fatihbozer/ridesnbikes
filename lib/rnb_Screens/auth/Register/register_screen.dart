@@ -2,42 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
 import 'package:rides_n_bikes/mainfeed.dart';
 import 'package:rides_n_bikes/resources/auth_methods.dart';
-import 'package:rides_n_bikes/rnb_Screens/auth/Login_or_Register/Register/register_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/auth/Login/login_screen.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/rl_button.dart';
 import 'package:rides_n_bikes/rnb_Widgets/TextField/rides_textfield.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPwController = TextEditingController();
   bool _isLoading = false;
 
-  void loginUser() async {
+  void signUpUser() async {
     setState(() {
       _isLoading = true;
     });
-    String res = await AuthMethods().loginUser(
+
+    // Aufruf der Funktion zur Benutzerregistrierung
+    String res = await AuthMethods().signUpUser(
       email: emailController.text,
       password: passwordController.text,
+      username: usernameController.text,
+      confirmPw: confirmPwController.text,
     );
-    if (res == 'success') {
-      // Navigiert zur MainFeedPage nach erfolgreichem Login
 
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => const MainFeedPage())));
-    } else {
-      // Zeigt die Fehlermeldung an, falls das Login nicht erfolgreich war
-
-      displayMessageToUser(res, context);
-    }
     setState(() {
       _isLoading = false;
     });
+
+    if (res != 'success') {
+      // Zeigt die Fehlermeldung an, falls das Registrieren nicht erfolgreich war
+      displayMessageToUser(res, context);
+    } else {
+      // Navigiert zur MainFeedPage nach erfolgreicher Registrierung
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => const MainFeedPage())));
+    }
   }
 
   @override
@@ -60,38 +66,27 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(fontFamily: 'Formula1bold', fontSize: 28),
                       ),
                       const SizedBox(height: 32),
+                      MyTextField(hintText: "Username", obscureText: false, controller: usernameController),
+                      const SizedBox(height: 16),
                       MyTextField(hintText: "E-Mail", obscureText: false, controller: emailController),
                       const SizedBox(height: 16),
                       MyTextField(hintText: "Password", obscureText: true, controller: passwordController),
-                      /*
-
-                       // FORGET PASSWORD FUNCTION
-
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Forgot Password?',
-                            style: TextStyle(color: Colors.grey[700]),
-                          ),                          
-                        ],
-                      ),
-                      */
+                      const SizedBox(height: 16),
+                      MyTextField(hintText: "Confirm Password", obscureText: true, controller: confirmPwController),
                       const SizedBox(height: 32),
-                      MyRLButton(text: 'Login', onTap: loginUser),
+                      MyRLButton(text: 'Register', onTap: signUpUser),
                       const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Dont have an account?  '),
+                          const Text('Already have an account?  '),
                           GestureDetector(
                             onTap: () {
-                              // Navigiert zur RegisterPage bei Klick auf "Register here"
-
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
+                              // Navigiert zur LoginPage bei Klick auf "Login here"
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
                             },
                             child: const Text(
-                              'Register here.',
+                              'Login here.',
                               style: TextStyle(fontFamily: 'Formula1bold'),
                             ),
                           ),

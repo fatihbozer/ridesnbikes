@@ -2,42 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/helper/helper_functions.dart';
 import 'package:rides_n_bikes/mainfeed.dart';
 import 'package:rides_n_bikes/resources/auth_methods.dart';
-import 'package:rides_n_bikes/rnb_Screens/auth/Login_or_Register/Login/login_screen.dart';
+import 'package:rides_n_bikes/rnb_Screens/auth/Register/register_screen.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/rl_button.dart';
 import 'package:rides_n_bikes/rnb_Widgets/TextField/rides_textfield.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController usernameController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPwController = TextEditingController();
   bool _isLoading = false;
 
-  void signUpUser() async {
+  void loginUser() async {
     setState(() {
       _isLoading = true;
     });
-    String res = await AuthMethods().signUpUser(
+    String res = await AuthMethods().loginUser(
       email: emailController.text,
       password: passwordController.text,
-      username: usernameController.text,
-      confirmPw: confirmPwController.text,
     );
+    if (res == 'success') {
+      // Navigiert zur MainFeedPage nach erfolgreichem Login
+
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => const MainFeedPage())));
+    } else {
+      // Zeigt die Fehlermeldung an, falls das Login nicht erfolgreich war
+
+      displayMessageToUser(res, context);
+    }
     setState(() {
       _isLoading = false;
     });
-    if (res != 'success') {
-      displayMessageToUser(res, context);
-    } else {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => const MainFeedPage())));
-    }
   }
 
   @override
@@ -60,26 +60,38 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: TextStyle(fontFamily: 'Formula1bold', fontSize: 28),
                       ),
                       const SizedBox(height: 32),
-                      MyTextField(hintText: "Username", obscureText: false, controller: usernameController),
-                      const SizedBox(height: 16),
                       MyTextField(hintText: "E-Mail", obscureText: false, controller: emailController),
                       const SizedBox(height: 16),
                       MyTextField(hintText: "Password", obscureText: true, controller: passwordController),
-                      const SizedBox(height: 16),
-                      MyTextField(hintText: "Confirm Password", obscureText: true, controller: confirmPwController),
+                      /*
+
+                       // FORGET PASSWORD FUNCTION
+
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Forgot Password?',
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),                          
+                        ],
+                      ),
+                      */
                       const SizedBox(height: 32),
-                      MyRLButton(text: 'Register', onTap: signUpUser),
+                      MyRLButton(text: 'Login', onTap: loginUser),
                       const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Already have an account?  '),
+                          const Text('Dont have an account?  '),
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+                              // Navigiert zur RegisterPage bei Klick auf "Register here"
+
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
                             },
                             child: const Text(
-                              'Login here.',
+                              'Register here.',
                               style: TextStyle(fontFamily: 'Formula1bold'),
                             ),
                           ),
@@ -93,6 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           if (_isLoading)
             Container(
+              // Hintergrund für den Ladebildschirm
               color: Colors.black.withOpacity(0.5),
               child: const Center(
                 child: CircularProgressIndicator(),

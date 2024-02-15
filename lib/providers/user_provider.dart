@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rides_n_bikes/resources/auth_methods.dart';
 import 'package:rides_n_bikes/rnb_models/user.dart';
+
 /*
 class UserProvider with ChangeNotifier {
   User? _user;
@@ -22,7 +23,7 @@ class UserProvider with ChangeNotifier {
   User get getUser =>
       _user ??
       User(
-        email: '', // Füge hier Standardwerte ein oder lass es leer, je nach Bedarf
+        email: '',
         username: '',
         name: '',
         bio: '',

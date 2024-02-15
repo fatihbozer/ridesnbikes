@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rides_n_bikes/rnb_Widgets/Buttons/my_button.dart';
 import 'package:rides_n_bikes/rnb_Widgets/brands_models.dart';
-import 'package:rides_n_bikes/rnb_Widgets/post_card.dart'; // Bitte importieren Sie Ihre PostCard-Datei entsprechend
+import 'package:rides_n_bikes/rnb_Widgets/post_card.dart';
 
 class MotorcycleScreen extends StatefulWidget {
   const MotorcycleScreen({Key? key}) : super(key: key);
@@ -21,6 +21,7 @@ class _MotorcycleScreenState extends State<MotorcycleScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Selected Bikes'),
         backgroundColor: Colors.white,
         elevation: 0,

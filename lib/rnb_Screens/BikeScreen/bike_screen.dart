@@ -21,7 +21,6 @@ class _MotorcycleScreenState extends State<MotorcycleScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: const Text('Selected Bikes'),
         backgroundColor: Colors.white,
         elevation: 0,

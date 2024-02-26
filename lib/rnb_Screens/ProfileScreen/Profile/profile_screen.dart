@@ -62,7 +62,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: const Text(
           'Profile',
           style: TextStyle(color: Colors.black),
@@ -291,6 +290,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   }),
                                 )
                               : ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: (snapshot.data! as dynamic).docs.length,
                                   itemBuilder: (context, index) {

@@ -42,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
       displayMessageToUser(res, context);
     } else {
       // Navigiert zur MainFeedPage nach erfolgreicher Registrierung
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => const MainFeedPage())));
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainFeedPage()), (route) => false);
     }
   }
 

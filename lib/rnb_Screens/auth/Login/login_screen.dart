@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
     if (res == 'success') {
       // Navigiert zur MainFeedPage nach erfolgreichem Login
 
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => const MainFeedPage())));
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainFeedPage()), (route) => false);
     } else {
       // Zeigt die Fehlermeldung an, falls das Login nicht erfolgreich war
 

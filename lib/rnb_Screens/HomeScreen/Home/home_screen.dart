@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:rides_n_bikes/helper/helper_functions.dart';
+import 'package:rides_n_bikes/providers/user_provider.dart';
 import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Chats/chat_screen.dart';
 import 'package:rides_n_bikes/rnb_Screens/HomeScreen/Home/my_drawer.dart';
 import 'package:rides_n_bikes/rnb_Widgets/post_card.dart';
@@ -33,20 +35,38 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       backgroundColor: Colors.white,
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('posts').orderBy('datePublished', descending: true).snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+      body: FutureBuilder(
+        future: UserProvider().refreshUser(),
+        builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              return StreamBuilder(
+                stream: FirebaseFirestore.instance.collection('posts').orderBy('datePublished', descending: true).snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) => PostCard(
+                      snap: snapshot.data!.docs[index].data(),
+                    ),
+                  );
+                },
+              );
+            } else {
+              displayMessageToUser;
+              return Container();
+            }
           }
-          return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) => PostCard(
-              snap: snapshot.data!.docs[index].data(),
-            ),
-          );
+          displayMessageToUser;
+          return Container();
         },
       ),
     );

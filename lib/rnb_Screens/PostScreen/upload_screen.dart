@@ -54,10 +54,7 @@ class _UploadScreenState extends State<UploadScreen> {
           _isLoading = false;
         });
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MainFeedPage()), // Passen Sie dies an Ihre Seitenstruktur an
-        );
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainFeedPage()), (route) => false);
       } else {
         setState(() {
           _isLoading = false;

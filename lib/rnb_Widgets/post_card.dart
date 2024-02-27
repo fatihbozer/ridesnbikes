@@ -71,24 +71,28 @@ class _PostCardState extends State<PostCard> {
                         widget.snap['username'],
                         style: const TextStyle(fontFamily: 'Formula1bold'),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const Icon(
-                                Icons.location_on,
-                                size: 14,
-                              ),
-                              Text(
-                                widget.snap['location'],
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+
+                      // falls kein Standort hinzugefügt wurde kein Icon und Standort anzeigen
+
+                      if (widget.snap['location'] != null && widget.snap['location'].isNotEmpty)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                const Icon(
+                                  Icons.location_on,
+                                  size: 14,
+                                ),
+                                Text(
+                                  widget.snap['location'],
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                     ],
                   ),
                 ),

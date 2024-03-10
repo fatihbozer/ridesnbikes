@@ -54,17 +54,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           children: [
             TextField(
               controller: usernameController,
-              decoration: const InputDecoration(labelText: 'New Username', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                  labelText: 'New Username', border: OutlineInputBorder()),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: nameController,
-              decoration: const InputDecoration(labelText: 'New Name', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                  labelText: 'New Name', border: OutlineInputBorder()),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: bioController,
-              decoration: const InputDecoration(labelText: 'New Bio', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                  labelText: 'New Bio', border: OutlineInputBorder()),
             ),
             const SizedBox(height: 16),
             MyButton(

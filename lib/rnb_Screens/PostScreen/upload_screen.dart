@@ -22,7 +22,8 @@ class UploadScreen extends StatefulWidget {
 
 class _UploadScreenState extends State<UploadScreen> {
   XFile? image;
-  TextEditingController descriptionTextEditingController = TextEditingController();
+  TextEditingController descriptionTextEditingController =
+      TextEditingController();
   TextEditingController locationTextEditingController = TextEditingController();
   bool _isLoading = false;
   String? selectedBrand;
@@ -54,7 +55,9 @@ class _UploadScreenState extends State<UploadScreen> {
           _isLoading = false;
         });
 
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainFeedPage()), (route) => false);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const MainFeedPage()),
+            (route) => false);
       } else {
         setState(() {
           _isLoading = false;
@@ -105,13 +108,15 @@ class _UploadScreenState extends State<UploadScreen> {
       Position position = await _determinePosition();
 
       // Hole die Platzinformationen für die erhaltene Position
-      List<Placemark> placeMarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      List<Placemark> placeMarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
 
       // Extrahiere die erste Platzmarkierung (Annahme: Es gibt mindestens eine Platzmarkierung)
       Placemark mPlaceMark = placeMarks[0];
 
       // Baue die vollständige Adresse
-      String completeAddressInfo = '${mPlaceMark.subThoroughfare} ${mPlaceMark.thoroughfare}, ${mPlaceMark.subLocality} ${mPlaceMark.locality}, ${mPlaceMark.subAdministrativeArea} ${mPlaceMark.administrativeArea}, ${mPlaceMark.postalCode} ${mPlaceMark.country}';
+      String completeAddressInfo =
+          '${mPlaceMark.subThoroughfare} ${mPlaceMark.thoroughfare}, ${mPlaceMark.subLocality} ${mPlaceMark.locality}, ${mPlaceMark.subAdministrativeArea} ${mPlaceMark.administrativeArea}, ${mPlaceMark.postalCode} ${mPlaceMark.country}';
 
       // Baue die spezifische Adresse
       String specificAddress = '${mPlaceMark.locality}, ${mPlaceMark.country}';
@@ -143,7 +148,8 @@ class _UploadScreenState extends State<UploadScreen> {
         title: const Text('New Post'),
         actions: [
           TextButton(
-            onPressed: () => postImage(user.uid, user.username, user.profileImageUrl, widget.image),
+            onPressed: () => postImage(
+                user.uid, user.username, user.profileImageUrl, widget.image),
             child: const Text('Share'),
           ),
         ],
@@ -157,7 +163,8 @@ class _UploadScreenState extends State<UploadScreen> {
               SizedBox(
                 height: 320,
                 width: 320,
-                child: widget.image != null && File(widget.image!.path).existsSync()
+                child: widget.image != null &&
+                        File(widget.image!.path).existsSync()
                     ? Image.file(
                         File(widget.image!.path),
                         fit: BoxFit.cover,
@@ -172,13 +179,16 @@ class _UploadScreenState extends State<UploadScreen> {
 
               ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(user.profileImageUrl),
+                  backgroundImage:
+                      CachedNetworkImageProvider(user.profileImageUrl),
                 ),
                 title: SizedBox(
                   width: 250,
                   child: TextField(
                     controller: descriptionTextEditingController,
-                    decoration: const InputDecoration(hintText: 'Write description here...', border: InputBorder.none),
+                    decoration: const InputDecoration(
+                        hintText: 'Write description here...',
+                        border: InputBorder.none),
                   ),
                 ),
               ),
@@ -187,7 +197,8 @@ class _UploadScreenState extends State<UploadScreen> {
               // SELECT BIKE
 
               ListTile(
-                leading: const Icon(Icons.motorcycle), // Fügen Sie das gewünschte Motorrad-Icon hinzu
+                leading: const Icon(Icons
+                    .motorcycle), // Fügen Sie das gewünschte Motorrad-Icon hinzu
                 title: DropdownButtonFormField<String>(
                   decoration: const InputDecoration(
                     hintText: 'Select Brand...',
@@ -210,7 +221,8 @@ class _UploadScreenState extends State<UploadScreen> {
               ),
               if (selectedBrand != null)
                 ListTile(
-                  leading: const Icon(Icons.motorcycle), // Fügen Sie das gewünschte Motorrad-Icon hinzu
+                  leading: const Icon(Icons
+                      .motorcycle), // Fügen Sie das gewünschte Motorrad-Icon hinzu
                   title: DropdownButtonFormField<String>(
                     decoration: const InputDecoration(
                       hintText: 'Select Model...',

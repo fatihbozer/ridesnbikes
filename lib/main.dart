@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: rideMode,
         title: "rides n' Bikes",
         home: const AuthPage(),
